@@ -4,14 +4,16 @@ using CookItWebApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CookItWebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181124160448_2")]
+    partial class _2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,21 +125,6 @@ namespace CookItWebApi.Migrations
                     b.HasIndex("_IdReceta");
 
                     b.ToTable("IngredientesRecetas");
-                });
-
-            modelBuilder.Entity("CookItWebApi.Models.IngredienteUsuario", b =>
-                {
-                    b.Property<int>("_IdIngrediente");
-
-                    b.Property<string>("_Email");
-
-                    b.Property<int>("_Cantidad");
-
-                    b.HasKey("_IdIngrediente", "_Email");
-
-                    b.HasIndex("_Email");
-
-                    b.ToTable("IngredientesUsuarios");
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.PasoReceta", b =>
@@ -359,19 +346,6 @@ namespace CookItWebApi.Migrations
                     b.HasOne("CookItWebApi.Models.Receta", "_Receta")
                         .WithMany("_Ingredientes")
                         .HasForeignKey("_IdReceta")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CookItWebApi.Models.IngredienteUsuario", b =>
-                {
-                    b.HasOne("CookItWebApi.Models.UserInfo", "_UserInfo")
-                        .WithMany()
-                        .HasForeignKey("_Email")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CookItWebApi.Models.Ingrediente", "_Ingrediente")
-                        .WithMany()
-                        .HasForeignKey("_IdIngrediente")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
