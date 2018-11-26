@@ -110,8 +110,8 @@ namespace CookItWebApi.Controllers
 
             return Ok(new
             {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = exp
+                _AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                _ExpireDate = exp
             });
 
         }
