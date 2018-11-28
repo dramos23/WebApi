@@ -26,18 +26,18 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<IngredienteReceta> GetAll(int _RecetaId)
+        public IEnumerable<IngredienteReceta> GetAll(int RecetaId)
         {
 
-            return _Context.IngredienteRecetas.Where(x => x._IdReceta == _RecetaId).ToList();
+            return _Context.IngredienteRecetas.Where(x => x._IdReceta == RecetaId).ToList();
 
         }
 
         [HttpGet("{id}", Name = "IngredienteRecetaCreado")]
-        public IActionResult GetbyId(int _RecetaId)
+        public IActionResult GetbyId(int id)
         {
 
-            var _IngredienteReceta = _Context.IngredienteRecetas.FirstOrDefault(x => x._IdReceta == _RecetaId);
+            var _IngredienteReceta = _Context.IngredienteRecetas.FirstOrDefault(x => x._IdReceta == id);
 
             if (_IngredienteReceta == null)
             {
@@ -50,9 +50,9 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] IngredienteReceta _IngredienteReceta, int _IdReceta)
+        public IActionResult Post([FromBody] IngredienteReceta _IngredienteReceta, int RecetaId)
         {
-            _IngredienteReceta._IdReceta = _IdReceta;
+            _IngredienteReceta._IdReceta = RecetaId;
 
             if (!ModelState.IsValid)
             {

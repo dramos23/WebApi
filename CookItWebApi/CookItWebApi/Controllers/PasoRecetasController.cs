@@ -26,18 +26,18 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<PasoReceta> GetAll(int IdReceta)
+        public IEnumerable<PasoReceta> GetAll(int RecetaId)
         {
 
-            return _Context.PasoRecetas.Where(x => x._IdReceta == IdReceta).ToList();
+            return _Context.PasoRecetas.Where(x => x._IdReceta == RecetaId).ToList();
 
         }
 
         [HttpGet("{id}", Name = "PasoRecetaCreado")]
-        public IActionResult GetbyId(int IdReceta)
+        public IActionResult GetbyId(int id)
         {
 
-            var _PasoReceta = _Context.PasoRecetas.FirstOrDefault(x => x._IdReceta == IdReceta);
+            var _PasoReceta = _Context.PasoRecetas.FirstOrDefault(x => x._IdReceta == id);
 
             if (_PasoReceta == null)
             {
@@ -50,9 +50,17 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] PasoReceta _PasoReceta, int _IdReceta)
+        public IActionResult Post([FromBody] PasoReceta _PasoReceta, int RecetaId)
         {
-            _PasoReceta._IdReceta = _IdReceta;
+            var _Receta = _Context.Recetas.FirstOrDefault(x => x._IdReceta == RecetaId);
+
+            if (_Receta._IdReceta != RecetaId)
+            {
+
+                return NotFound();
+
+            }
+
 
             if (!ModelState.IsValid)
             {
@@ -66,10 +74,10 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody] PasoReceta _PasoReceta, int IdPasoReceta)
+        public IActionResult Put([FromBody] PasoReceta _PasoReceta, int id)
         {
 
-            if (_PasoReceta._IdPasoReceta != IdPasoReceta)
+            if (_PasoReceta._IdPasoReceta != id)
             {
 
                 return BadRequest(ModelState);
@@ -83,12 +91,12 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int IdPasoReceta)
+        public IActionResult Delete(int id)
         {
 
-            var _PasoReceta = _Context.PasoRecetas.FirstOrDefault(x => x._IdPasoReceta == IdPasoReceta);
+            var _PasoReceta = _Context.PasoRecetas.FirstOrDefault(x => x._IdPasoReceta == id);
 
-            if (_PasoReceta._IdPasoReceta != IdPasoReceta)
+            if (_PasoReceta._IdPasoReceta != id)
             {
 
                 return NotFound();

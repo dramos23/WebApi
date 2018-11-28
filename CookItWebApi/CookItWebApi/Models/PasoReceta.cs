@@ -11,6 +11,7 @@ namespace CookItWebApi.Models
     [Table("PasoRecetas")]
     public class PasoReceta
     {
+        [Key]
         public int _IdPasoReceta { set; get; }
         [Required]
         [StringLength(200)]
@@ -20,6 +21,7 @@ namespace CookItWebApi.Models
         public byte[] imagen;
         public int _IdReceta { set; get; }
         [ForeignKey("_IdReceta")]
+        [JsonIgnore]
         public Receta _Receta { set; get; }
 
 

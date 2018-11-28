@@ -14,6 +14,7 @@ namespace CookItWebApi.Models
         //[Key, Column(Order = 1)]   
         public int _IdReceta { set; get; }
         [ForeignKey("_IdReceta")]
+        [JsonIgnore]
         public Receta _Receta { set; get; }
 
         //public IngredienteReceta(Ingrediente Ing, int Cantidad, int IdReceta) : base(Ing, Cantidad)
