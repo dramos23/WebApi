@@ -52,7 +52,7 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("RecetasFiltro")]
         public IActionResult ObtenerRecetasFiltro([FromBody] Dictionary<string, string> obj)
         {
