@@ -26,6 +26,7 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpGet]
+        [Route("ObtenerIngRecetaID")] //ObtenerIngReceta
         public IEnumerable<IngredienteReceta> GetAll(int RecetaId)
         {
 

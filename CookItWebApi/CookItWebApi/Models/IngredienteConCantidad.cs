@@ -11,7 +11,7 @@ namespace CookItWebApi.Models
     [NotMapped]
     public abstract class IngredienteConCantidad
     {
-        //[Key, Column(Order = 0)]
+        
         public int _IdIngrediente { set; get; }
 
         [ForeignKey("_IdIngrediente")]

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CookItWebApi.Migrations
 {
-    public partial class _1 : Migration
+    public partial class test1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -190,6 +190,53 @@ namespace CookItWebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IngredientesUsuarios",
+                columns: table => new
+                {
+                    _IdIngrediente = table.Column<int>(nullable: false),
+                    _Ingrediente_Id = table.Column<int>(nullable: true),
+                    _Cantidad = table.Column<int>(nullable: false),
+                    _Email = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IngredientesUsuarios", x => new { x._IdIngrediente, x._Email });
+                    table.ForeignKey(
+                        name: "FK_IngredientesUsuarios_Usuarios__Email",
+                        column: x => x._Email,
+                        principalTable: "Usuarios",
+                        principalColumn: "_Email",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IngredientesUsuarios_Ingredientes__Ingrediente_Id",
+                        column: x => x._Ingrediente_Id,
+                        principalTable: "Ingredientes",
+                        principalColumn: "_Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Perfiles",
+                columns: table => new
+                {
+                    _Email = table.Column<string>(nullable: false),
+                    _Foto = table.Column<byte[]>(nullable: true),
+                    _NombreUsuario = table.Column<string>(nullable: false),
+                    _Nombre = table.Column<string>(nullable: false),
+                    _Apellido = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Perfiles", x => x._Email);
+                    table.ForeignKey(
+                        name: "FK_Perfiles_Usuarios__Email",
+                        column: x => x._Email,
+                        principalTable: "Usuarios",
+                        principalColumn: "_Email",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Recetas",
                 columns: table => new
                 {
@@ -228,6 +275,7 @@ namespace CookItWebApi.Migrations
                 columns: table => new
                 {
                     _IdIngrediente = table.Column<int>(nullable: false),
+                    _Ingrediente_Id = table.Column<int>(nullable: true),
                     _Cantidad = table.Column<int>(nullable: false),
                     _IdReceta = table.Column<int>(nullable: false)
                 },
@@ -235,17 +283,17 @@ namespace CookItWebApi.Migrations
                 {
                     table.PrimaryKey("PK_IngredientesRecetas", x => new { x._IdIngrediente, x._IdReceta });
                     table.ForeignKey(
-                        name: "FK_IngredientesRecetas_Ingredientes__IdIngrediente",
-                        column: x => x._IdIngrediente,
-                        principalTable: "Ingredientes",
-                        principalColumn: "_Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_IngredientesRecetas_Recetas__IdReceta",
                         column: x => x._IdReceta,
                         principalTable: "Recetas",
                         principalColumn: "_IdReceta",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IngredientesRecetas_Ingredientes__Ingrediente_Id",
+                        column: x => x._Ingrediente_Id,
+                        principalTable: "Ingredientes",
+                        principalColumn: "_Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,6 +309,7 @@ namespace CookItWebApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PasoRecetas", x => new { x._IdPasoReceta, x._IdReceta });
+                    table.UniqueConstraint("AK_PasoRecetas__IdPasoReceta", x => x._IdPasoReceta);
                     table.ForeignKey(
                         name: "FK_PasoRecetas_Recetas__IdReceta",
                         column: x => x._IdReceta,
@@ -320,6 +369,21 @@ namespace CookItWebApi.Migrations
                 column: "_IdReceta");
 
             migrationBuilder.CreateIndex(
+                name: "IX_IngredientesRecetas__Ingrediente_Id",
+                table: "IngredientesRecetas",
+                column: "_Ingrediente_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientesUsuarios__Email",
+                table: "IngredientesUsuarios",
+                column: "_Email");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientesUsuarios__Ingrediente_Id",
+                table: "IngredientesUsuarios",
+                column: "_Ingrediente_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PasoRecetas__IdReceta",
                 table: "PasoRecetas",
                 column: "_IdReceta");
@@ -351,7 +415,13 @@ namespace CookItWebApi.Migrations
                 name: "IngredientesRecetas");
 
             migrationBuilder.DropTable(
+                name: "IngredientesUsuarios");
+
+            migrationBuilder.DropTable(
                 name: "PasoRecetas");
+
+            migrationBuilder.DropTable(
+                name: "Perfiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

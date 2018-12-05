@@ -118,9 +118,13 @@ namespace CookItWebApi.Migrations
 
                     b.Property<int>("_Cantidad");
 
+                    b.Property<int?>("_Ingrediente_Id");
+
                     b.HasKey("_IdIngrediente", "_IdReceta");
 
                     b.HasIndex("_IdReceta");
+
+                    b.HasIndex("_Ingrediente_Id");
 
                     b.ToTable("IngredientesRecetas");
                 });
@@ -133,9 +137,13 @@ namespace CookItWebApi.Migrations
 
                     b.Property<int>("_Cantidad");
 
+                    b.Property<int?>("_Ingrediente_Id");
+
                     b.HasKey("_IdIngrediente", "_Email");
 
                     b.HasIndex("_Email");
+
+                    b.HasIndex("_Ingrediente_Id");
 
                     b.ToTable("IngredientesUsuarios");
                 });
@@ -353,15 +361,14 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.IngredienteReceta", b =>
                 {
-                    b.HasOne("CookItWebApi.Models.Ingrediente", "_Ingrediente")
-                        .WithMany()
-                        .HasForeignKey("_IdIngrediente")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("CookItWebApi.Models.Receta", "_Receta")
                         .WithMany("_Ingredientes")
                         .HasForeignKey("_IdReceta")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CookItWebApi.Models.Ingrediente", "_Ingrediente")
+                        .WithMany()
+                        .HasForeignKey("_Ingrediente_Id");
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.IngredienteUsuario", b =>
@@ -373,8 +380,7 @@ namespace CookItWebApi.Migrations
 
                     b.HasOne("CookItWebApi.Models.Ingrediente", "_Ingrediente")
                         .WithMany()
-                        .HasForeignKey("_IdIngrediente")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("_Ingrediente_Id");
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.PasoReceta", b =>
