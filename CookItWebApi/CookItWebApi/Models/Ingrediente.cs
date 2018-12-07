@@ -48,6 +48,7 @@ namespace CookItWebApi.Models
         public int _Costo { set; get; }
 
         public TipoMedida _Medida { set; get; }
+
         [Required]
         [Range(0, int.MaxValue)]
         public int _MedidaPromedio { set; get; }
@@ -188,6 +189,8 @@ namespace CookItWebApi.Models
         //{
         //    return false;
         //}
+
+
 
     }
 }

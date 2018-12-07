@@ -36,11 +36,34 @@ namespace CookItWebApi.Controllers
         [HttpGet("{id}", Name = "RecetaCreada")]
         public IActionResult GetbyId(int id)
         {
+
+
+
             var _Receta = _Context.Recetas
-                                  .Where(x => x._IdReceta == id)
-                                  .Include(x => x._Pasos)
-                                  .Include(x => x._IngredientesReceta);
-                       
+                                  .Where(rec => rec._IdReceta == id)
+                                  .Include(rec => rec._Pasos)
+                                  .Include(rec => rec._IngredientesReceta);
+            
+            //.Where(z => z._IdReceta == id).Select(z => z._Ingrediente));
+
+            //var _Receta = (from rec in _Context.Recetas
+            //              .Include("Pasos")
+            //              .Include("IngredientesReceta")
+            //               where rec._IdReceta == id
+            //               select rec);
+
+            //var _IngRec = (from ir in _Context.IngredienteRecetas
+            //                                .Include("Ingrediente")
+            //               where ir._IdReceta == id
+            //               select ir);
+
+            //foreach (var item in _Receta) {
+
+            //    item._IngredientesReceta = _IngRec.ToList();
+
+            //}
+
+
             if (_Receta == null)
             {
 
