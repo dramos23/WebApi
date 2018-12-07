@@ -30,7 +30,8 @@ namespace CookItWebApi.Controllers
         public IEnumerable<IngredienteReceta> GetAll(int RecetaId)
         {
 
-            return _Context.IngredienteRecetas.Where(x => x._IdReceta == RecetaId).ToList();
+            return _Context.IngredienteRecetas.Where(x => x._IdReceta == RecetaId)
+                                              .Include(x => x._Ingrediente);
 
         }
 

@@ -39,7 +39,7 @@ namespace CookItWebApi.Controllers
             var _Receta = _Context.Recetas
                                   .Where(x => x._IdReceta == id)
                                   .Include(x => x._Pasos)
-                                  .Include(x => x._Ingredientes);
+                                  .Include(x => x._IngredientesReceta);
                        
             if (_Receta == null)
             {

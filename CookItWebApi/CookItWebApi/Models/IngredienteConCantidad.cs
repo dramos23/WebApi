@@ -15,7 +15,7 @@ namespace CookItWebApi.Models
         public int _IdIngrediente { set; get; }
 
         [ForeignKey("_IdIngrediente")]
-        [JsonIgnore]
+        //[JsonIgnore]
         public Ingrediente _Ingrediente { set; get; }
        
         [Required]

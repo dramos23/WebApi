@@ -24,6 +24,7 @@ namespace CookItWebApi.Models
 
         [Key]
         public int _IdReceta { get; set; }
+        [Required]
         public string _Titulo { get; set; }
         [Required]
         public MomentoDia _MomentoDia { get; set; }
@@ -33,7 +34,8 @@ namespace CookItWebApi.Models
         public int _Dificultad { get; set; }
         [Required]
         public int _TiempoPreparacion { get; set; }
-
+        [Required]
+        public string _Descripcion { get; set; }
 
         //public Pais _PaisOrigen { get; set; }
         public byte[] _Foto { get; set; }
@@ -53,12 +55,12 @@ namespace CookItWebApi.Models
         public bool _AptoVegetarianos { get; set; }
         public bool _AptoVeganos { get; set; }
         public bool _Habilitada { get; set; }
-        public List<IngredienteReceta> _Ingredientes { set; get; }
+        public List<IngredienteReceta> _IngredientesReceta { set; get; }
         public List<PasoReceta> _Pasos { set; get; }
 
         public Receta() {
 
-            _Ingredientes = new List<IngredienteReceta>();
+            _IngredientesReceta = new List<IngredienteReceta>();
             _Pasos = new List<PasoReceta>();
         }
 
