@@ -27,11 +27,11 @@ namespace CookItWebApi.Controllers
 
         [HttpGet]
         [Route("ObtenerIngRecetaID")] //ObtenerIngReceta
-        public IEnumerable<IngredienteReceta> GetAll(int RecetaId)
+        public ICollection<IngredienteReceta> GetAll(int RecetaId)
         {
 
             return _Context.IngredienteRecetas.Where(x => x._IdReceta == RecetaId)
-                                              .Include(x => x._Ingrediente);
+                                              .Include(x => x._Ingrediente).ToList();
 
         }
 
@@ -39,7 +39,7 @@ namespace CookItWebApi.Controllers
         public IActionResult GetbyId(int id)
         {
 
-            var _IngredienteReceta = _Context.IngredienteRecetas.FirstOrDefault(x => x._IdReceta == id);
+            var _IngredienteReceta = _Context.IngredienteRecetas.FirstOrDefault(x => x._IdReceta == id);            
 
             if (_IngredienteReceta == null)
             {
