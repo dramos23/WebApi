@@ -38,39 +38,41 @@ namespace CookItWebApi.Controllers
         {
 
 
+            var recetas = _Context.Recetas.Where(r => r._IdReceta == id).Include(r => r._IngredientesReceta);
+            var ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == id).Include(x => x._Ingrediente).ToList();
+          
+            foreach (var receta in recetas)
+            {
 
-            var _Receta = _Context.Recetas
-                                  .Where(rec => rec._IdReceta == id)
-                                  .Include(rec => rec._Pasos)
-                                  .Include(rec => rec._IngredientesReceta);
-            
-            //.Where(z => z._IdReceta == id).Select(z => z._Ingrediente));
+                int idRI = 0;
+                foreach (var ingrec in receta._IngredientesReceta)
+                {
 
-            //var _Receta = (from rec in _Context.Recetas
-            //              .Include("Pasos")
-            //              .Include("IngredientesReceta")
-            //               where rec._IdReceta == id
-            //               select rec);
+                    foreach (var ir in ingredientesReceta)
+                    {
 
-            //var _IngRec = (from ir in _Context.IngredienteRecetas
-            //                                .Include("Ingrediente")
-            //               where ir._IdReceta == id
-            //               select ir);
+                        if (ingrec.Equals(ir))
+                        {
 
-            //foreach (var item in _Receta) {
+                            receta._IngredientesReceta[idRI]._Ingrediente = ir._Ingrediente;
 
-            //    item._IngredientesReceta = _IngRec.ToList();
+                        }
 
-            //}
+                    }
+                    idRI++;
+
+                }
+
+            }
 
 
-            if (_Receta == null)
+            if (recetas == null)
             {
 
                 return NotFound();
             }
 
-            return Ok(_Receta);
+            return Ok(recetas);
 
         }
 
