@@ -38,7 +38,7 @@ namespace CookItWebApi.Controllers
         {
 
 
-            var recetas = _Context.Recetas.Where(r => r._IdReceta == id).Include(r => r._IngredientesReceta);
+            var recetas = _Context.Recetas.Where(r => r._IdReceta == id).Include(r => r._IngredientesReceta).Include(r => r._ComentariosReceta).Include(r => r._Pasos);
             var ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == id).Include(x => x._Ingrediente).ToList();
           
             foreach (var receta in recetas)

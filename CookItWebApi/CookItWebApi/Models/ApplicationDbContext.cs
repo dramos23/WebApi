@@ -17,6 +17,7 @@ namespace CookItWebApi.Models
         public DbSet<IngredienteReceta> IngredienteRecetas { get; set; }
         public DbSet<Perfil> Perfiles { get; set; }
         public DbSet<IngredienteUsuario> IngredienteUsuarios { get; set; }
+        public DbSet<ComentarioReceta> ComentarioRecetas { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder builder)
@@ -38,14 +39,21 @@ namespace CookItWebApi.Models
             modelBuilder.Entity<IngredienteReceta>()
                 .ToTable("IngredientesRecetas");
             modelBuilder.Entity<IngredienteReceta>()
-                .HasKey(c => new { c._IdIngrediente, c._IdReceta });
+                .HasKey(c => new { c._IdReceta, c._IdIngrediente });
             modelBuilder.Entity<PasoReceta>()
                 .HasKey(c => new { c._IdPasoReceta, c._IdReceta });
+            modelBuilder.Entity<PasoReceta>()
+                .Property(f => f._IdPasoReceta).ValueGeneratedOnAdd();
             modelBuilder.Entity<IngredienteUsuario>()
                 .ToTable("IngredientesUsuarios");
             modelBuilder.Entity<IngredienteUsuario>()
                 .HasKey(c => new { c._IdIngrediente, c._Email });
+            modelBuilder.Entity<ComentarioReceta>()
+                .HasKey(c => new { c._IdReceta, c._IdComentario });
+            modelBuilder.Entity<ComentarioReceta>()
+                .Property(f => f._IdComentario).ValueGeneratedOnAdd();
             base.OnModelCreating(modelBuilder);
+
         }
     }
 

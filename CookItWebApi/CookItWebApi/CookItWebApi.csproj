@@ -8,6 +8,16 @@
   <ItemGroup>
     <Compile Remove="Migrations\20181207005335_1.cs" />
     <Compile Remove="Migrations\20181207005335_1.Designer.cs" />
+    <Compile Remove="Migrations\20181211002925_4.cs" />
+    <Compile Remove="Migrations\20181211002925_4.Designer.cs" />
+    <Compile Remove="Migrations\20181211003431_5.cs" />
+    <Compile Remove="Migrations\20181211003431_5.Designer.cs" />
+    <Compile Remove="Migrations\20181211003754_4.cs" />
+    <Compile Remove="Migrations\20181211003754_4.Designer.cs" />
+    <Compile Remove="Migrations\20181211011907_9.cs" />
+    <Compile Remove="Migrations\20181211011907_9.Designer.cs" />
+    <Compile Remove="Migrations\20181211012940_10.cs" />
+    <Compile Remove="Migrations\20181211012940_10.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

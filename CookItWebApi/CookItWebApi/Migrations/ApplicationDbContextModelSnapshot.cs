@@ -70,6 +70,32 @@ namespace CookItWebApi.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("CookItWebApi.Models.ComentarioReceta", b =>
+                {
+                    b.Property<int>("_IdReceta");
+
+                    b.Property<int>("_IdComentario")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("_Comentario")
+                        .IsRequired();
+
+                    b.Property<string>("_EmailUsuario");
+
+                    b.Property<DateTime>("_Fecha");
+
+                    b.Property<int>("_Puntaje");
+
+                    b.HasKey("_IdReceta", "_IdComentario");
+
+                    b.HasAlternateKey("_IdComentario", "_IdReceta");
+
+                    b.HasIndex("_EmailUsuario");
+
+                    b.ToTable("ComentariosRecetas");
+                });
+
             modelBuilder.Entity("CookItWebApi.Models.Ingrediente", b =>
                 {
                     b.Property<int>("_Id")
@@ -112,15 +138,15 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.IngredienteReceta", b =>
                 {
-                    b.Property<int>("_IdIngrediente");
-
                     b.Property<int>("_IdReceta");
+
+                    b.Property<int>("_IdIngrediente");
 
                     b.Property<int>("_Cantidad");
 
-                    b.HasKey("_IdIngrediente", "_IdReceta");
+                    b.HasKey("_IdReceta", "_IdIngrediente");
 
-                    b.HasIndex("_IdReceta");
+                    b.HasIndex("_IdIngrediente");
 
                     b.ToTable("IngredientesRecetas");
                 });
@@ -142,7 +168,9 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.PasoReceta", b =>
                 {
-                    b.Property<int>("_IdPasoReceta");
+                    b.Property<int>("_IdPasoReceta")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("_IdReceta");
 
@@ -156,11 +184,9 @@ namespace CookItWebApi.Migrations
 
                     b.HasKey("_IdPasoReceta", "_IdReceta");
 
-                    b.HasAlternateKey("_IdPasoReceta");
-
                     b.HasIndex("_IdReceta");
 
-                    b.ToTable("PasoRecetas");
+                    b.ToTable("PasosRecetas");
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.Perfil", b =>
@@ -353,6 +379,18 @@ namespace CookItWebApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("CookItWebApi.Models.ComentarioReceta", b =>
+                {
+                    b.HasOne("CookItWebApi.Models.UserInfo", "_Creador")
+                        .WithMany()
+                        .HasForeignKey("_EmailUsuario");
+
+                    b.HasOne("CookItWebApi.Models.Receta", "_Receta")
+                        .WithMany("_ComentariosReceta")
+                        .HasForeignKey("_IdReceta")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.IngredienteReceta", b =>
