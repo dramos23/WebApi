@@ -18,6 +18,12 @@
     <Compile Remove="Migrations\20181211011907_9.Designer.cs" />
     <Compile Remove="Migrations\20181211012940_10.cs" />
     <Compile Remove="Migrations\20181211012940_10.Designer.cs" />
+    <Compile Remove="Migrations\20181211231551_4.cs" />
+    <Compile Remove="Migrations\20181211231551_4.Designer.cs" />
+    <Compile Remove="Migrations\20181211233924_5.cs" />
+    <Compile Remove="Migrations\20181211233924_5.Designer.cs" />
+    <Compile Remove="Migrations\20181211234514_6.cs" />
+    <Compile Remove="Migrations\20181211234514_6.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
