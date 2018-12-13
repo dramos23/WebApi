@@ -215,6 +215,58 @@ namespace CookItWebApi.Migrations
                     b.Property<string>("_Apellido")
                         .IsRequired();
 
+                    b.Property<bool>("_FiltroAutomatico");
+
+                    b.Property<bool>("_FiltroCalorias");
+
+                    b.Property<int>("_FiltroCaloriasMax");
+
+                    b.Property<int>("_FiltroCaloriasMin");
+
+                    b.Property<bool>("_FiltroCantPlatos");
+
+                    b.Property<int>("_FiltroCantPlatosMax");
+
+                    b.Property<int>("_FiltroCantPlatosMin");
+
+                    b.Property<bool>("_FiltroCeliaco");
+
+                    b.Property<bool>("_FiltroDiabetico");
+
+                    b.Property<bool>("_FiltroDificultad");
+
+                    b.Property<int>("_FiltroDificultadMax");
+
+                    b.Property<int>("_FiltroDificultadMin");
+
+                    b.Property<bool>("_FiltroEstacion");
+
+                    b.Property<bool>("_FiltroMomentoDia");
+
+                    b.Property<bool>("_FiltroPaisOrigen");
+
+                    b.Property<bool>("_FiltroPrecio");
+
+                    b.Property<int>("_FiltroPrecioMax");
+
+                    b.Property<int>("_FiltroPrecioMin");
+
+                    b.Property<bool>("_FiltroPuntuacion");
+
+                    b.Property<int>("_FiltroPuntuacionMax");
+
+                    b.Property<int>("_FiltroPuntuacionMin");
+
+                    b.Property<bool>("_FiltroTiempoPreparacion");
+
+                    b.Property<int>("_FiltroTiempoPreparacionMax");
+
+                    b.Property<int>("_FiltroTiempoPreparacionMin");
+
+                    b.Property<bool>("_FiltroVegano");
+
+                    b.Property<bool>("_FiltroVegetariano");
+
                     b.Property<byte[]>("_Foto");
 
                     b.Property<string>("_Nombre")
@@ -276,6 +328,19 @@ namespace CookItWebApi.Migrations
                     b.HasIndex("_EmailCreador");
 
                     b.ToTable("Recetas");
+                });
+
+            modelBuilder.Entity("CookItWebApi.Models.RecetaFavorita", b =>
+                {
+                    b.Property<string>("_EmailUsuario");
+
+                    b.Property<int>("_IdReceta");
+
+                    b.Property<DateTime>("_FechaHora");
+
+                    b.HasKey("_EmailUsuario", "_IdReceta");
+
+                    b.ToTable("RecetasFavoritas");
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.UserInfo", b =>
@@ -467,6 +532,14 @@ namespace CookItWebApi.Migrations
                     b.HasOne("CookItWebApi.Models.UserInfo", "_Creador")
                         .WithMany()
                         .HasForeignKey("_EmailCreador")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CookItWebApi.Models.RecetaFavorita", b =>
+                {
+                    b.HasOne("CookItWebApi.Models.UserInfo", "_Creador")
+                        .WithMany()
+                        .HasForeignKey("_EmailUsuario")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -114,10 +114,17 @@ namespace CookItWebApi.Controllers
 
             if (ModelState.IsValid)
             {
+                try { 
+                    _Context.Recetas.Add(_Receta);
+                    _Context.SaveChanges();
 
-                _Context.Recetas.Add(_Receta);
-                _Context.SaveChanges();
-                return new CreatedAtRouteResult("RecetaCreada", new { id = _Receta._IdReceta }, _Receta);
+                    return new CreatedAtRouteResult("RecetaCreada", new { id = _Receta._IdReceta }, _Receta);
+                }
+                catch(Exception ex) {
+                    
+                    return NotFound(ex.Message);
+                }
+                
 
             }
 

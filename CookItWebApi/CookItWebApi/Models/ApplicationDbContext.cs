@@ -19,6 +19,7 @@ namespace CookItWebApi.Models
         public DbSet<IngredienteUsuario> IngredienteUsuarios { get; set; }
         public DbSet<ComentarioReceta> ComentarioRecetas { get; set; }
         public DbSet<HistorialReceta> HistorialRecetas { get; set; }
+        public DbSet<RecetaFavorita> RecetasFavoritas { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder builder)
@@ -59,6 +60,10 @@ namespace CookItWebApi.Models
             modelBuilder.Entity<HistorialReceta>()
                 .Property(f => f._IdHistorialReceta).ValueGeneratedOnAdd();
             modelBuilder.Entity<HistorialReceta>()
+                .Ignore(p => p._Receta);
+            modelBuilder.Entity<RecetaFavorita>()
+                .HasKey(c => new { c._EmailUsuario, c._IdReceta });
+            modelBuilder.Entity<RecetaFavorita>()
                 .Ignore(p => p._Receta);
             base.OnModelCreating(modelBuilder);
 
