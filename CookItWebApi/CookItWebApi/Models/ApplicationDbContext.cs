@@ -18,6 +18,8 @@ namespace CookItWebApi.Models
         public DbSet<Perfil> Perfiles { get; set; }
         public DbSet<IngredienteUsuario> IngredienteUsuarios { get; set; }
 
+        public DbSet<TipoIngrediente> TiposIngredientes { get; set; }
+
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{

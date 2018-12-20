@@ -11,18 +11,19 @@ namespace CookItWebApi.Models
     public class Ingrediente
     {
         public enum Tipo {
-            Frutas = 1,
-            Verduras = 2,
-            Lacteos = 3,
-            Carnes = 4,
-            PescadosMariscos = 5,
-            Legumbres = 6,
-            FrutosSecosSemillas = 7,
-            Cereales = 8,
-            SalsasAderezos = 9,
-            AceitesGrasas = 10,
-            ParaHornear = 11,
-            EspeciasHierbas = 12
+            Aceites = 1,
+            Carne = 2,
+            Cereales_y_Derivados = 3,
+            Cremas_de_untar = 4,
+            Especias_y_hierbas = 5,
+            Fiambres_y_embutidos = 6,
+            Frutas_y_Verduras = 7,
+            Frutos_secos_y_semillas = 8,
+            Ingredientes_para_hornear = 9,
+            Leche_y_productos_lacteos = 10,
+            Pastas_y_fideos = 11,
+            Pescado_y_mariscos = 12,
+            Salsas = 13
         }
         public enum Estacion {
             Verano = 1,
