@@ -8,6 +8,22 @@
   <ItemGroup>
     <Compile Remove="Migrations\20181207005335_1.cs" />
     <Compile Remove="Migrations\20181207005335_1.Designer.cs" />
+    <Compile Remove="Migrations\20181211002925_4.cs" />
+    <Compile Remove="Migrations\20181211002925_4.Designer.cs" />
+    <Compile Remove="Migrations\20181211003431_5.cs" />
+    <Compile Remove="Migrations\20181211003431_5.Designer.cs" />
+    <Compile Remove="Migrations\20181211003754_4.cs" />
+    <Compile Remove="Migrations\20181211003754_4.Designer.cs" />
+    <Compile Remove="Migrations\20181211011907_9.cs" />
+    <Compile Remove="Migrations\20181211011907_9.Designer.cs" />
+    <Compile Remove="Migrations\20181211012940_10.cs" />
+    <Compile Remove="Migrations\20181211012940_10.Designer.cs" />
+    <Compile Remove="Migrations\20181211231551_4.cs" />
+    <Compile Remove="Migrations\20181211231551_4.Designer.cs" />
+    <Compile Remove="Migrations\20181211233924_5.cs" />
+    <Compile Remove="Migrations\20181211233924_5.Designer.cs" />
+    <Compile Remove="Migrations\20181211234514_6.cs" />
+    <Compile Remove="Migrations\20181211234514_6.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,7 +32,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
       <PrivateAssets>all</PrivateAssets>

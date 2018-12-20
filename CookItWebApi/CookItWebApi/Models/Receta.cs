@@ -57,11 +57,14 @@ namespace CookItWebApi.Models
         public bool _Habilitada { get; set; }
         public List<IngredienteReceta> _IngredientesReceta { set; get; }
         public List<PasoReceta> _Pasos { set; get; }
+        public List<ComentarioReceta> _ComentariosReceta { get; set; }        
+            
 
         public Receta() {
 
             _IngredientesReceta = new List<IngredienteReceta>();
             _Pasos = new List<PasoReceta>();
+            _ComentariosReceta = new List<ComentarioReceta>();
         }
 
         //Constructor para traer de base de datos
