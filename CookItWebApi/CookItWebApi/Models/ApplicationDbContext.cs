@@ -67,6 +67,8 @@ namespace CookItWebApi.Models
                 .HasKey(c => new { c._EmailUsuario, c._IdReceta });
             modelBuilder.Entity<RecetaFavorita>()
                 .Ignore(p => p._Receta);
+            modelBuilder.Entity<TipoIngrediente>()
+                .Property(f => f._IdTipo).ValueGeneratedOnAdd();
             base.OnModelCreating(modelBuilder);
 
         }
