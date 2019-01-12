@@ -29,14 +29,14 @@ namespace CookItWebApi.Controllers
         public IEnumerable<Ingrediente> Get()
         {
 
-            return _Context.Ingredientes.ToList();
+            return _Context.Ingredientes.Include(x => x._TipoIngrediente).ToList();
 
         }
 
         [HttpGet("{id}", Name = "IngredienteCreado")]
         public IActionResult GetbyId(int id) {
 
-            var Ingrediente = _Context.Ingredientes.FirstOrDefault(x => x._Id == id);
+            var Ingrediente = _Context.Ingredientes.Include(x => x._TipoIngrediente).FirstOrDefault(x => x._IdIngrediente == id);
 
             if (Ingrediente == null) {
 
@@ -51,10 +51,44 @@ namespace CookItWebApi.Controllers
         public IActionResult Post([FromBody] Ingrediente ingrediente) {
 
             if (ModelState.IsValid) {
+                try
+                {
+                    _Context.Ingredientes.Add(ingrediente);
+                    _Context.SaveChanges();
+                    return new CreatedAtRouteResult("IngredienteCreado", new { id = ingrediente._IdIngrediente }, ingrediente);
+                }
+                catch (Exception ex) {
+                    return BadRequest(ex.Message);
+                }
 
-                _Context.Ingredientes.Add(ingrediente);
-                _Context.SaveChanges();
-                return new CreatedAtRouteResult("IngredienteCreado", new { id = ingrediente._Id }, ingrediente);
+            }
+
+            return BadRequest(ModelState);
+        }
+
+        //SE UTILIZA MOMENTANEAMENTE PARA DAR DE ALTA UNA LISTA DE INGREDIENTES DESDE POSTMAN
+
+        [HttpPost]
+        [Route("Lista")]
+        public IActionResult Post([FromBody] IngredientesAux ingredientes)
+        {
+
+            if (ModelState.IsValid)
+            {
+                foreach (Ingrediente ing in ingredientes.ListIng)
+                {
+                    _Context.Ingredientes.AddRange(ing);
+                }
+                try
+                {
+                    _Context.SaveChanges();
+                    return Ok();
+                }
+                catch(Exception ex) {
+                    return BadRequest(ex);
+                }
+                
+                
 
             }
 
@@ -64,7 +98,7 @@ namespace CookItWebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] Ingrediente ingrediente, int id) {
 
-            if (ingrediente._Id != id)
+            if (ingrediente._IdIngrediente != id)
             {
 
                 return BadRequest(ModelState);
@@ -80,9 +114,9 @@ namespace CookItWebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) {
 
-            var ingrediente = _Context.Ingredientes.FirstOrDefault(x => x._Id == id);
+            var ingrediente = _Context.Ingredientes.FirstOrDefault(x => x._IdIngrediente == id);
 
-            if (ingrediente._Id != id)
+            if (ingrediente == null)
             {
 
                 return NotFound();

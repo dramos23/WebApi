@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace CookItWebApi.Models
 {
+    //[Table("Perfiles")]
     public class Perfil
     {
         [Key]
         public string _Email { get; set; }
         [ForeignKey("_Email")]
         [JsonIgnore]
-        public UserInfo _Creador { get; set; }
+        public Usuario _Usuario { get; set; }
         
         public byte[] _Foto { set; get; }
         [Required]
@@ -55,6 +56,8 @@ namespace CookItWebApi.Models
         [Required]
         public bool _FiltroMomentoDia { set; get; }
         [Required]
+        public int _FiltroMomentoDiaId { set; get; }
+        [Required]
         public bool _FiltroPuntuacion { set; get; }
         [Required]
         [Range(0, int.MaxValue)]
@@ -64,6 +67,8 @@ namespace CookItWebApi.Models
         public int _FiltroPuntuacionMax { set; get; }
         [Required]
         public bool _FiltroEstacion { set; get; }
+        [Required]
+        public int _FiltroEstacionId { set; get; }
         [Required]
         public bool _FiltroDificultad { set; get; }
         [Required]

@@ -1,48 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <UserSecretsId>1e4e06c7-383a-4020-b175-83e30d798daa</UserSecretsId>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>cab98beb-6733-4c52-a685-17c590bfc0ee</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Migrations\20181207005335_1.cs" />
-    <Compile Remove="Migrations\20181207005335_1.Designer.cs" />
-    <Compile Remove="Migrations\20181211002925_4.cs" />
-    <Compile Remove="Migrations\20181211002925_4.Designer.cs" />
-    <Compile Remove="Migrations\20181211003431_5.cs" />
-    <Compile Remove="Migrations\20181211003431_5.Designer.cs" />
-    <Compile Remove="Migrations\20181211003754_4.cs" />
-    <Compile Remove="Migrations\20181211003754_4.Designer.cs" />
-    <Compile Remove="Migrations\20181211011907_9.cs" />
-    <Compile Remove="Migrations\20181211011907_9.Designer.cs" />
-    <Compile Remove="Migrations\20181211012940_10.cs" />
-    <Compile Remove="Migrations\20181211012940_10.Designer.cs" />
-    <Compile Remove="Migrations\20181211231551_4.cs" />
-    <Compile Remove="Migrations\20181211231551_4.Designer.cs" />
-    <Compile Remove="Migrations\20181211233924_5.cs" />
-    <Compile Remove="Migrations\20181211233924_5.Designer.cs" />
-    <Compile Remove="Migrations\20181211234514_6.cs" />
-    <Compile Remove="Migrations\20181211234514_6.Designer.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
 </Project>

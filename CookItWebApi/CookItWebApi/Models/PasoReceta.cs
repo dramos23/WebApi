@@ -8,28 +8,23 @@ using Newtonsoft.Json;
 
 namespace CookItWebApi.Models
 {
-    [Table("PasosRecetas")]
+    //[Table("PasosRecetas")]
     public class PasoReceta
     {
 
-        [Key]
-        [Column(Order = 1)]
         public int _IdReceta { set; get; }
-        [ForeignKey("_IdReceta")]
+
         [JsonIgnore]
         public Receta _Receta { set; get; }
-
-        [Key]
-        [Column(Order = 2)]
+        [Required]
         public int _IdPasoReceta { set; get; }
 
 
         [Required]
-        [StringLength(200)]
-        public string _Texto { set; get; }
+        public string _Descripcion { set; get; }
         public int _TiempoReloj { set; get; }
         public string _UrlVideo { set; get; }
-        public byte[] imagen;
+        public byte[] _Foto { set; get; }
 
 
     }

@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CookItWebApi.Models
 {
-    [Table("TipoIngrediente")]
+    //[Table("TiposIngredientes")]
+
     public class TipoIngrediente
     {
         [Key]
-        public int _IdTipo { get; set; }
-        [Required]
-        
-        public int _Nombre { get; set; }
+        public int _IdTipoIngrediente { get; set; }
+        [Required]        
+        public string _Nombre { get; set; }
     }
 }

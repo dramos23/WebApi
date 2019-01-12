@@ -10,7 +10,7 @@ namespace CookItWebApi.Models
     {
         //[Key, Column(Order = 1)]   
         public string _Email { set; get; }
-        [ForeignKey("_Email")]
-        public UserInfo _UserInfo { set; get; }
+        
+        public Usuario _UserInfo { set; get; }
     }
 }

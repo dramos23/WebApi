@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CookItWebApi.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CookItWebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/HistorialReceta")]
-    public class HistorialRecetaController : Controller
+    public class HistorialRecetasController : Controller
     {
 
         private readonly ApplicationDbContext _Context;
 
-        public HistorialRecetaController(ApplicationDbContext context)
+        public HistorialRecetasController(ApplicationDbContext context)
         {
 
             this._Context = context;
@@ -27,7 +23,7 @@ namespace CookItWebApi.Controllers
         public IEnumerable<HistorialReceta> GetAll(string EmailUsu)
         {
 
-            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._EmailUsuario == EmailUsu);
+            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._Email == EmailUsu);
 
             foreach (HistorialReceta x in _HistorialReceta)
             {
@@ -49,7 +45,7 @@ namespace CookItWebApi.Controllers
         public IActionResult GetbyId(string EmailUsu, int Id)
         {
 
-            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._EmailUsuario == EmailUsu && x._IdHistorialReceta == Id);
+            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._Email == EmailUsu && x._IdHistorialReceta == Id);
             
 
             foreach (HistorialReceta x in _HistorialReceta) {
@@ -87,43 +83,6 @@ namespace CookItWebApi.Controllers
 
             return BadRequest(ModelState);
         }
-
-        //[HttpPut("{EmailUsu},{Id}")]
-        //public IActionResult Put([FromBody] HistorialReceta _HistorialReceta, string EmailUsu, int Id)
-        //{
-
-
-        //    if (_HistorialReceta._EmailUsuario != EmailUsu || _HistorialReceta._IdHistorialReceta != Id)
-        //    {
-
-        //        return BadRequest(ModelState);
-
-        //    }
-
-        //    _Context.Entry(_HistorialReceta).State = EntityState.Modified;
-        //    _Context.SaveChanges();
-        //    return Ok();
-
-        //}
-
-        //[HttpDelete("{EmailUsu},{Id}")]
-        //public IActionResult Delete(string EmailUsu, int Id)
-        //{
-
-        //    var _HistorialReceta = _Context.HistorialRecetas.FirstOrDefault(x => x._EmailUsuario == EmailUsu && x._IdHistorialReceta == Id);
-
-        //    if (_HistorialReceta._EmailUsuario != EmailUsu || _HistorialReceta._IdHistorialReceta != Id)
-        //    {
-
-        //        return NotFound();
-
-        //    }
-
-        //    _Context.HistorialRecetas.Remove(_HistorialReceta);
-        //    _Context.SaveChanges();
-        //    return Ok(_HistorialReceta);
-
-        //}
 
     }
 }

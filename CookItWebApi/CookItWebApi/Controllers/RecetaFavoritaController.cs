@@ -26,7 +26,7 @@ namespace CookItWebApi.Controllers
         public IEnumerable<RecetaFavorita> GetAll(string EmailUsu)
         {
 
-            var _RecetasFavoritas = _Context.RecetasFavoritas.Where(x => x._EmailUsuario == EmailUsu).ToList();
+            var _RecetasFavoritas = _Context.RecetasFavoritas.Where(x => x._Email == EmailUsu).ToList();
 
             foreach (RecetaFavorita x in _RecetasFavoritas)
             {
@@ -69,9 +69,9 @@ namespace CookItWebApi.Controllers
         public IActionResult Delete(string EmailUsu, int RecetaId)
         {
 
-            var _RecetaFavorita = _Context.RecetasFavoritas.FirstOrDefault(x => x._EmailUsuario == EmailUsu && x._IdReceta == RecetaId);
+            var _RecetaFavorita = _Context.RecetasFavoritas.FirstOrDefault(x => x._Email == EmailUsu && x._IdReceta == RecetaId);
 
-            if (_RecetaFavorita._EmailUsuario != EmailUsu || _RecetaFavorita._IdReceta != RecetaId)
+            if (_RecetaFavorita == null)
             {
 
                 return NotFound();

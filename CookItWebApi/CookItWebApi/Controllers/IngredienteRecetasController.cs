@@ -30,7 +30,7 @@ namespace CookItWebApi.Controllers
         public ICollection<IngredienteReceta> GetAll(int RecetaId)
         {
 
-            return _Context.IngredienteRecetas.Where(x => x._IdReceta == RecetaId)
+            return _Context.IngredienteRecetas.Where(x => x._Receta._IdReceta == RecetaId)
                                               .Include(x => x._Ingrediente).ToList();
 
         }
@@ -54,8 +54,7 @@ namespace CookItWebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] IngredienteReceta _IngredienteReceta, int RecetaId)
         {
-            _IngredienteReceta._IdReceta = RecetaId;
-
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -71,7 +70,7 @@ namespace CookItWebApi.Controllers
         public IActionResult Put([FromBody] IngredienteReceta _IngredienteReceta, int id)
         {
 
-            if (_IngredienteReceta._IdReceta != id)
+            if (_IngredienteReceta._Receta._IdReceta != id)
             {
 
                 return BadRequest(ModelState);

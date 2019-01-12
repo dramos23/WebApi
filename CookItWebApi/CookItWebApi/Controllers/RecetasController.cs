@@ -38,41 +38,17 @@ namespace CookItWebApi.Controllers
         {
 
 
-            var recetas = _Context.Recetas.Where(r => r._IdReceta == id).Include(r => r._IngredientesReceta).Include(r => r._ComentariosReceta).Include(r => r._Pasos);
-            var ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == id).Include(x => x._Ingrediente).ToList();
-          
-            foreach (var receta in recetas)
-            {
+            Receta receta = _Context.Recetas.Include(r => r._IngredientesReceta).Include(r => r._ComentariosReceta).Include(r => r._Pasos).FirstOrDefault(r => r._IdReceta == id);
+            List<IngredienteReceta> ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == id).Include(x => x._Ingrediente).ToList();
+            receta._IngredientesReceta = ingredientesReceta;
 
-                int idRI = 0;
-                foreach (var ingrec in receta._IngredientesReceta)
-                {
-
-                    foreach (var ir in ingredientesReceta)
-                    {
-
-                        if (ingrec.Equals(ir))
-                        {
-
-                            receta._IngredientesReceta[idRI]._Ingrediente = ir._Ingrediente;
-
-                        }
-
-                    }
-                    idRI++;
-
-                }
-
-            }
-
-
-            if (recetas == null)
+            if (receta == null)
             {
 
                 return NotFound();
             }
 
-            return Ok(recetas);
+            return Ok(receta);
 
         }
 
@@ -86,12 +62,16 @@ namespace CookItWebApi.Controllers
             _Recetas = (obj.ContainsKey("AptoDiabetico")) ? _Recetas.FindAll(x => x._AptoDiabeticos == Boolean.Parse(obj["AptoDiabetico"])) : _Recetas;
             _Recetas = (obj.ContainsKey("AptoVegano")) ? _Recetas.FindAll(x => x._AptoVeganos == Boolean.Parse(obj["AptoVegano"])) : _Recetas;
             _Recetas = (obj.ContainsKey("AptoVegetariano")) ? _Recetas.FindAll(x => x._AptoVegetarianos == Boolean.Parse(obj["AptoVegetariano"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("MomentoDia")) ? _Recetas.FindAll(x => x._MomentoDia == (Receta.MomentoDia)Convert.ToInt64(obj["MomentoDia"])) : _Recetas;
+            _Recetas = (obj.ContainsKey("MomentoDia")) ? _Recetas.FindAll(x => x._MomentoDia._IdMomentoDia == Convert.ToInt64(obj["MomentoDia"])) : _Recetas;
             _Recetas = (obj.ContainsKey("PuntajeTotal")) ? _Recetas.FindAll(x => x._PuntajeTotal == Convert.ToDouble(obj["PuntajeTotal"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("Estacion")) ? _Recetas.FindAll(x => x._Estacion == (Ingrediente.Estacion)Convert.ToInt64(obj["Estacion"])) : _Recetas;
+            _Recetas = (obj.ContainsKey("Estacion")) ? _Recetas.FindAll(x => x._Estacion._IdEstacion == Convert.ToInt64(obj["Estacion"])) : _Recetas;
             _Recetas = (obj.ContainsKey("Dificultad")) ? _Recetas.FindAll(x => x._Dificultad == Convert.ToInt64(obj["Dificultad"])) : _Recetas;
             _Recetas = (obj.ContainsKey("CostoMayorIgual")) ? _Recetas.FindAll(x => x._Costo >= Convert.ToInt64(obj["CostoMayorIgual"])) : _Recetas;
             _Recetas = (obj.ContainsKey("CostoMenorIgual")) ? _Recetas.FindAll(x => x._Costo <= Convert.ToInt64(obj["CostoMenorIgual"])) : _Recetas;
+            _Recetas = (obj.ContainsKey("PuntajeMayorIgual")) ? _Recetas.FindAll(x => x._Costo >= Convert.ToInt64(obj["PuntajeMayorIgual"])) : _Recetas;
+            _Recetas = (obj.ContainsKey("PuntajeMenorIgual")) ? _Recetas.FindAll(x => x._Costo <= Convert.ToInt64(obj["PuntajeMenorIgual"])) : _Recetas;
+            _Recetas = (obj.ContainsKey("CaloriasMayorIgual")) ? _Recetas.FindAll(x => x._CantCalorias >= Convert.ToInt64(obj["CaloriasMayorIgual"])) : _Recetas;
+            _Recetas = (obj.ContainsKey("CaloriasMenorIgual")) ? _Recetas.FindAll(x => x._CantCalorias <= Convert.ToInt64(obj["CaloriasMenorIgual"])) : _Recetas;
             _Recetas = (obj.ContainsKey("CantPlatosMayorIgual")) ? _Recetas.FindAll(x => x._CantPlatos >= Convert.ToInt64(obj["CantPlatosMayorIgual"])) : _Recetas;
             _Recetas = (obj.ContainsKey("CantPlatosMenorIgual")) ? _Recetas.FindAll(x => x._CantPlatos <= Convert.ToInt64(obj["CantPlatosMenorIgual"])) : _Recetas;
             _Recetas = (obj.ContainsKey("TiempoPreparacionMayorIgual")) ? _Recetas.FindAll(x => x._TiempoPreparacion >= Convert.ToInt64(obj["TiempoPreparacionMayorIgual"])) : _Recetas;
@@ -112,23 +92,22 @@ namespace CookItWebApi.Controllers
         public IActionResult Post([FromBody] Receta _Receta)
         {
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try { 
-                    _Context.Recetas.Add(_Receta);
-                    _Context.SaveChanges();
-
-                    return new CreatedAtRouteResult("RecetaCreada", new { id = _Receta._IdReceta }, _Receta);
-                }
-                catch(Exception ex) {
-                    
-                    return NotFound(ex.Message);
-                }
-                
-
+                return BadRequest(ModelState);               
             }
 
-            return BadRequest(ModelState);
+            try
+            {
+                _Context.Recetas.Add(_Receta);
+                var ret =_Context.SaveChanges();
+                return Created("Ingresado",_Receta);
+                
+            }
+            catch {
+                return NotFound("Error");
+            }
+            
         }
 
         [HttpPut("{id}")]
@@ -154,7 +133,7 @@ namespace CookItWebApi.Controllers
 
             var _Receta = _Context.Recetas.FirstOrDefault(x => x._IdReceta == id);
 
-            if (_Receta._IdReceta != id)
+            if (_Receta == null)
             {
 
                 return NotFound();

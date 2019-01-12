@@ -13,12 +13,12 @@ namespace CookItWebApi.Controllers
     [Produces("application/json")]
     [Route("api/Recetas/{RecetaId}/Comentario")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class ComentarioController : Controller
+    public class ComentariosController : Controller
     {
 
         private readonly ApplicationDbContext _Context;
 
-        public ComentarioController(ApplicationDbContext context)
+        public ComentariosController(ApplicationDbContext context)
         {
 
             this._Context = context;
@@ -54,13 +54,10 @@ namespace CookItWebApi.Controllers
         {
             var _Receta = _Context.Recetas.FirstOrDefault(x => x._IdReceta == RecetaId);
 
-            if (_Receta._IdReceta != RecetaId)
+            if (_Receta == null)
             {
-
                 return NotFound();
-
             }
-
 
             if (!ModelState.IsValid)
             {
@@ -69,8 +66,8 @@ namespace CookItWebApi.Controllers
 
             _Context.ComentarioRecetas.Add(_ComentarioReceta);
             _Context.SaveChanges();
-
-            return new CreatedAtRouteResult("ComentarioRecetaCreado", new { id = _ComentarioReceta._IdComentario }, _ComentarioReceta);
+            
+            return new CreatedAtRouteResult("ComentarioRecetaCreado", new { id = _ComentarioReceta._IdComentario, RecetaId = _ComentarioReceta._IdReceta }, _ComentarioReceta);
         }
 
         [HttpPut("{id}")]
@@ -86,7 +83,7 @@ namespace CookItWebApi.Controllers
 
             _Context.Entry(_ComentarioReceta).State = EntityState.Modified;
             _Context.SaveChanges();
-            return Ok();
+            return Ok(_ComentarioReceta);
 
         }
 

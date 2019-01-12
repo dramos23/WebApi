@@ -54,7 +54,7 @@ namespace CookItWebApi.Controllers
         {
             var _Receta = _Context.Recetas.FirstOrDefault(x => x._IdReceta == RecetaId);
 
-            if (_Receta._IdReceta != RecetaId)
+            if (_Receta == null)
             {
 
                 return NotFound();
@@ -96,7 +96,7 @@ namespace CookItWebApi.Controllers
 
             var _PasoReceta = _Context.PasoRecetas.FirstOrDefault(x => x._IdPasoReceta == id);
 
-            if (_PasoReceta._IdPasoReceta != id)
+            if (_PasoReceta == null)
             {
 
                 return NotFound();

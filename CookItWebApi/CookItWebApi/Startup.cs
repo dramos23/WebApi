@@ -7,6 +7,7 @@ using CookItWebApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -69,21 +70,10 @@ namespace CookItWebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
+            //app.UseAuthentication().UseDeveloperExceptionPage();
 
             app.UseMvc();
 
-            //if (!context.Usuarios.Any()) {
-
-            //    context.Usuarios.AddRange(new List<Usuario> {
-            //        new Cliente(){
-            //            _Email = "daniel.r.23@gmail.com",
-            //            _Pass = "Piripitiflautico18"
-            //         }
-            //    });
-            //    context.SaveChanges();
-
-            //}
         }
     }
 }

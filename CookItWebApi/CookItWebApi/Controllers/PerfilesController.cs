@@ -30,12 +30,12 @@ namespace CookItWebApi.Controllers
         public IActionResult GetbyId(string email)
         {
 
-            var _Perfil = _Context.Perfiles.Where(x => x._Email == email);
+            var _Perfil = _Context.Perfiles.FirstOrDefault(x => x._Email == email);
 
             if (_Perfil == null)
             {
 
-                return NotFound();
+                return Ok(null);
             }
 
             return Ok(_Perfil);
@@ -71,7 +71,7 @@ namespace CookItWebApi.Controllers
 
             _Context.Entry(_Perfil).State = EntityState.Modified;
             _Context.SaveChanges();
-            return Ok();
+            return Ok(_Perfil);
 
         }
 

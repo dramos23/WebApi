@@ -15,16 +15,15 @@ using Microsoft.IdentityModel.Tokens;
 namespace CookItWebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Account")]
-    public class AccountController : Controller
+    [Route("api/Cuenta")]
+    public class UsuariosController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
-        private readonly ApplicationDbContext _Context
-            ;
+        private readonly ApplicationDbContext _Context;
 
-        public AccountController(
+        public UsuariosController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration, 
@@ -36,9 +35,9 @@ namespace CookItWebApi.Controllers
             _Context = context;
         }
 
-        [Route("Create")] //Registro
-        [HttpPost]
-        public async Task<IActionResult> CrearUsuario([FromBody] UserInfo Usuario)
+        
+        [HttpPost, Route("Registrar")] //Registro]
+        public async Task<IActionResult> CrearUsuario([FromBody] Usuario Usuario)
         {
 
             if (ModelState.IsValid)
@@ -53,7 +52,7 @@ namespace CookItWebApi.Controllers
                 }
                 else
                 {
-                    return BadRequest("Usuario o contrasña invalidos.");
+                    return BadRequest("Usuario ya existente.");
                 }
             }
             else
@@ -63,15 +62,14 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpPost]
-        [Route("Login")]
-        public async Task<IActionResult> Login([FromBody] UserInfo Usuario)
+        [HttpPost, Route("Ingresar")]
+        public async Task<IActionResult> Login([FromBody] Usuario Usuario)
         {
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(Usuario._Email, Usuario._Password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
-                {
+                {                                       
                     return BuildToken(Usuario);
                 }
                 else
@@ -86,19 +84,19 @@ namespace CookItWebApi.Controllers
             }
         }
 
-        private IActionResult BuildToken(UserInfo Usuario)
+        private IActionResult BuildToken(Usuario Usuario)
         {
-            var claims = new[]
+            Claim[] claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.UniqueName, Usuario._Email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, Usuario._Email),                
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey"]));
+            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var exp = DateTime.UtcNow.AddYears(1);
+            DateTime exp = DateTime.UtcNow.AddYears(1);
 
             JwtSecurityToken token = new JwtSecurityToken(            
                 issuer: "*",
