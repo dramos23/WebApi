@@ -26,6 +26,13 @@ namespace CookItWebApi.Controllers
 
         }
 
+        [HttpGet(Name = "ListEmailNombres")]
+        public IEnumerable<Perfil> Get()
+        {
+
+            return _Context.Perfiles.Select(a => new Perfil { _Email = a._Email, _NombreUsuario = a._NombreUsuario }).ToList();
+        }
+
         [HttpGet("{email}", Name = "PerfilCreado")]
         public IActionResult GetbyId(string email)
         {

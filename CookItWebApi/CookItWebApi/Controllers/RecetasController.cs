@@ -92,22 +92,16 @@ namespace CookItWebApi.Controllers
         public IActionResult Post([FromBody] Receta _Receta)
         {
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);               
-            }
-
-            try
+            if (ModelState.IsValid)
             {
                 _Context.Recetas.Add(_Receta);
-                var ret =_Context.SaveChanges();
-                return Created("Ingresado",_Receta);
+                _Context.SaveChanges();
+                return Ok(_Receta);
                 
             }
-            catch {
-                return NotFound("Error");
-            }
             
+            return BadRequest(ModelState);
+
         }
 
         [HttpPut("{id}")]

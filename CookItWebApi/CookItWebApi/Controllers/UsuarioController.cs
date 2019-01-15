@@ -36,7 +36,8 @@ namespace CookItWebApi.Controllers
         }
 
         
-        [HttpPost, Route("Registrar")] //Registro]
+        [HttpPost]
+        [Route("Registrar")]
         public async Task<IActionResult> CrearUsuario([FromBody] Usuario Usuario)
         {
 
@@ -62,15 +63,18 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpPost, Route("Ingresar")]
+        [HttpPost]
+        [Route("Ingresar")]
         public async Task<IActionResult> Login([FromBody] Usuario Usuario)
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Usuario._Email, Usuario._Password, isPersistent: false, lockoutOnFailure: false);
+
+                var result = await _signInManager.PasswordSignInAsync(Usuario._Email, Usuario._Password,false,false);
                 if (result.Succeeded)
-                {                                       
-                    return BuildToken(Usuario);
+                {
+                    IActionResult ret = BuildToken(Usuario);
+                    return ret;
                 }
                 else
                 {
@@ -113,5 +117,6 @@ namespace CookItWebApi.Controllers
             });
 
         }
+
     }
 }

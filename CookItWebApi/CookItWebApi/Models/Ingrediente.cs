@@ -36,7 +36,8 @@ namespace CookItWebApi.Models
        
         public enum TipoMedida {
             ml = 1,
-            gr = 2
+            gr = 2,
+            un = 3
         }
 
         
@@ -77,7 +78,6 @@ namespace CookItWebApi.Models
         
         [JsonIgnore]
         public virtual TipoIngrediente _TipoIngrediente { get; set; }
-
 
     }
 }

@@ -77,7 +77,7 @@ namespace CookItWebApi.Controllers
             {
                 foreach (Ingrediente ing in ingredientes.ListIng)
                 {
-                    _Context.Ingredientes.AddRange(ing);
+                    _Context.Ingredientes.Add(ing);
                 }
                 try
                 {

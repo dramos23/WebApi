@@ -70,7 +70,7 @@ namespace CookItWebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseAuthentication().UseDeveloperExceptionPage();
+            app.UseAuthentication().UseDeveloperExceptionPage();
 
             app.UseMvc();
 

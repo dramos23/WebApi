@@ -24,6 +24,10 @@ namespace CookItWebApi.Models
         public DbSet<TipoIngrediente> TiposIngredientes { get; set; }
         public DbSet<Estacion> Estaciones { get; set; }
 
+        public DbSet<EstadoReto> EstadosRetos { get; set; }
+
+        public DbSet<Reto> Retos { get; set; }
+
 
 
         //protected override void OnModelCreating(ModelBuilder builder)
@@ -120,6 +124,17 @@ namespace CookItWebApi.Models
 
             modelBuilder.Entity<Usuario>()
                 .HasKey(c => c._Email);
+
+            modelBuilder.Entity<EstadoReto>()
+                .Property(f => f._IdEstadoReto)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<EstadoReto>()
+                .HasKey(u => u._IdEstadoReto);
+            modelBuilder.Entity<EstadoReto>()
+                .HasIndex(u => u._Estado).IsUnique();
+
+            modelBuilder.Entity<Reto>()
+                .HasKey(c => new { c._EmailUsuarioOrigen, c._EmialUsuarioDestino, c._RecetaId, c._Cumplido });
 
             //modelBuilder.Entity<Receta>()
             //    .HasOne(a => a._MomentoDia)

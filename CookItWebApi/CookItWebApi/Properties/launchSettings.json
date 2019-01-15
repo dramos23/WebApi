@@ -16,16 +16,17 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "launchBrowser": true,
-      "launchUrl": "PoliticasPrivacidad"
+      "launchUrl": "api/Cuenta/Ingresar"
     },
     "CookItWebApi": {
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://localhost:5001;",
       "commandName": "Project",
       "environmentVariables": {
+        "SecretKey": "9EZe1uOv2iLbsLxHm6klU9SvLdnFMpO191RpgPQ6T80=",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "launchBrowser": true,
-      "launchUrl": "PoliticasPrivacidad"
+      "launchUrl": "api/Cuenta/Ingresar"
     }
   }
 }
