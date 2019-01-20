@@ -16,7 +16,7 @@ namespace CookItWebApi.Models
         public virtual Ingrediente _Ingrediente { set; get; }
 
         
-        [Required, Range(0, Double.PositiveInfinity), Column(Order = 3)]
+        [Required]
         public int _Cantidad { get; set; }
 
 

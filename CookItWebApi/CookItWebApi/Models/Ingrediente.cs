@@ -11,28 +11,6 @@ namespace CookItWebApi.Models
     //[Table("Ingredientes")]
     public class Ingrediente
     {
-        //public enum Tipo {
-        //    Aceites = 1,
-        //    Carnes = 2,
-        //    Cereales y Derivados = 3,
-        //    Cremas de untar = 4,
-        //    Especias y Hierbas = 5,
-        //    Fiambres y Embutidos = 6,
-        //    Frutas y Verduras = 7,
-        //    Frutos secos y Semillas = 8,
-        //    Ingredientes para hornear = 9,
-        //    Leche y productos lacteos = 10,
-        //    Pastas y Fideos = 11,
-        //    Pescado y Mariscos = 12,
-        //    Salsas = 13
-        //}
-        //public enum Estacion {
-        //    Verano = 1,
-        //    Otono = 2,
-        //    Invierno = 3,
-        //    Primavera = 4,
-        //    Varios = 5
-        //}
        
         public enum TipoMedida {
             ml = 1,
@@ -72,12 +50,12 @@ namespace CookItWebApi.Models
         public int _IdEstacion { set; get; }
         
         [JsonIgnore]
-        public virtual Estacion _Estacion { set; get; }
+        public Estacion _Estacion { set; get; }
         [Required]
         public int _IdTipoIngrediente { set; get; }
         
         [JsonIgnore]
-        public virtual TipoIngrediente _TipoIngrediente { get; set; }
+        public TipoIngrediente _TipoIngrediente { get; set; }
 
     }
 }

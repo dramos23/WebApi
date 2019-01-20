@@ -18,7 +18,7 @@ namespace CookItWebApi.Models
         [Required]
         public string _Email { get; set; }     
         [JsonIgnore]
-        public virtual Usuario _Usuario { get; set; }
+        public virtual Perfil _Perfil { get; set; }
 
         [Required]
         public string _Titulo { get; set; }
@@ -56,16 +56,16 @@ namespace CookItWebApi.Models
         public bool _AptoVegetarianos { get; set; }
         public bool _AptoVeganos { get; set; }
         
-        public List<IngredienteReceta> _IngredientesReceta { set; get; }
-        public List<PasoReceta> _Pasos { set; get; }
-        public List<ComentarioReceta> _ComentariosReceta { get; set; }        
+        public List<IngredienteReceta> _ListaIngredientesReceta { set; get; }
+        public List<PasoReceta> _ListaPasosReceta { set; get; }
+        public List<ComentarioReceta> _ListaComentariosReceta { get; set; }        
             
 
         public Receta() {
 
-            _IngredientesReceta = new List<IngredienteReceta>();
-            _Pasos = new List<PasoReceta>();
-            _ComentariosReceta = new List<ComentarioReceta>();
+            _ListaIngredientesReceta = new List<IngredienteReceta>();
+            _ListaPasosReceta = new List<PasoReceta>();
+            _ListaComentariosReceta = new List<ComentarioReceta>();
         }
 
     }

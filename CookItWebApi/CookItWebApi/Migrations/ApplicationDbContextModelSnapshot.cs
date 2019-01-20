@@ -72,8 +72,6 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.ComentarioReceta", b =>
                 {
-                    b.Property<int>("_IdReceta");
-
                     b.Property<int>("_IdComentario")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -85,11 +83,15 @@ namespace CookItWebApi.Migrations
 
                     b.Property<DateTime>("_Fecha");
 
+                    b.Property<int>("_IdReceta");
+
                     b.Property<int>("_Puntaje");
 
-                    b.HasKey("_IdReceta", "_IdComentario");
+                    b.HasKey("_IdComentario");
 
                     b.HasIndex("_Email");
+
+                    b.HasIndex("_IdReceta");
 
                     b.ToTable("ComentarioRecetas");
                 });
@@ -134,19 +136,11 @@ namespace CookItWebApi.Migrations
 
                     b.Property<int>("_IdReceta");
 
-                    b.Property<int>("_IdHistorialReceta")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<DateTime>("_FechaHora");
 
-                    b.HasKey("_Email", "_IdReceta", "_IdHistorialReceta");
+                    b.HasKey("_Email", "_IdReceta", "_FechaHora");
 
-                    b.HasIndex("_Email")
-                        .IsUnique();
-
-                    b.HasIndex("_IdReceta")
-                        .IsUnique();
+                    b.HasIndex("_IdReceta");
 
                     b.ToTable("HistorialRecetas");
                 });
@@ -211,15 +205,15 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.IngredienteUsuario", b =>
                 {
-                    b.Property<int>("_IdIngrediente");
-
                     b.Property<string>("_Email");
+
+                    b.Property<int>("_IdIngrediente");
 
                     b.Property<int>("_Cantidad");
 
-                    b.HasKey("_IdIngrediente", "_Email");
+                    b.HasKey("_Email", "_IdIngrediente");
 
-                    b.HasIndex("_Email");
+                    b.HasIndex("_IdIngrediente");
 
                     b.ToTable("IngredientesUsuarios");
                 });
@@ -239,6 +233,28 @@ namespace CookItWebApi.Migrations
                         .IsUnique();
 
                     b.ToTable("MomentosDias");
+                });
+
+            modelBuilder.Entity("CookItWebApi.Models.Notificacion", b =>
+                {
+                    b.Property<string>("_NotificacionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("_Descripción");
+
+                    b.Property<string>("_Email");
+
+                    b.Property<int>("_Estado");
+
+                    b.Property<DateTime>("_FechaHora");
+
+                    b.Property<string>("_Titulo");
+
+                    b.HasKey("_NotificacionId");
+
+                    b.HasIndex("_Email");
+
+                    b.ToTable("Notificaciones");
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.PasoReceta", b =>
@@ -298,13 +314,15 @@ namespace CookItWebApi.Migrations
 
                     b.Property<bool>("_FiltroEstacion");
 
-                    b.Property<int>("_FiltroEstacionId");
+                    b.Property<int?>("_FiltroEstacionId");
 
                     b.Property<bool>("_FiltroMomentoDia");
 
-                    b.Property<int>("_FiltroMomentoDiaId");
+                    b.Property<int?>("_FiltroMomentoDiaId");
 
                     b.Property<bool>("_FiltroPaisOrigen");
+
+                    b.Property<int?>("_FiltroPaisOrigenId");
 
                     b.Property<bool>("_FiltroPrecio");
 
@@ -405,9 +423,6 @@ namespace CookItWebApi.Migrations
 
                     b.HasKey("_Email", "_IdReceta");
 
-                    b.HasIndex("_Email")
-                        .IsUnique();
-
                     b.HasIndex("_IdReceta")
                         .IsUnique();
 
@@ -416,9 +431,9 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.Reto", b =>
                 {
-                    b.Property<string>("_EmailUsuarioOrigen");
+                    b.Property<string>("_EmailUsuOri");
 
-                    b.Property<string>("_EmialUsuarioDestino");
+                    b.Property<string>("_EmialUsuDes");
 
                     b.Property<int>("_RecetaId");
 
@@ -429,23 +444,21 @@ namespace CookItWebApi.Migrations
                     b.Property<string>("_ComentarioOrigen")
                         .IsRequired();
 
-                    b.Property<int?>("_Estado_IdEstadoReto");
-
                     b.Property<DateTime>("_Fecha");
 
-                    b.Property<int>("_IdEstado");
+                    b.Property<int>("_IdEstadoReto");
 
-                    b.Property<byte[]>("_Presentacio");
+                    b.Property<byte[]>("_Presentacion");
 
                     b.Property<int>("_Puntaje");
 
-                    b.Property<string>("_Usuario_Email");
+                    b.HasKey("_EmailUsuOri", "_EmialUsuDes", "_RecetaId", "_Cumplido");
 
-                    b.HasKey("_EmailUsuarioOrigen", "_EmialUsuarioDestino", "_RecetaId", "_Cumplido");
+                    b.HasIndex("_EmialUsuDes");
 
-                    b.HasIndex("_Estado_IdEstadoReto");
+                    b.HasIndex("_IdEstadoReto");
 
-                    b.HasIndex("_Usuario_Email");
+                    b.HasIndex("_RecetaId");
 
                     b.ToTable("Retos");
                 });
@@ -472,7 +485,11 @@ namespace CookItWebApi.Migrations
                     b.Property<string>("_Email")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("_Password");
+                    b.Property<Guid?>("_DeviceId");
+
+                    b.Property<int>("_Tipo");
+
+                    b.Property<DateTime>("_UltimoIngreso");
 
                     b.HasKey("_Email");
 
@@ -591,26 +608,27 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.ComentarioReceta", b =>
                 {
-                    b.HasOne("CookItWebApi.Models.Usuario", "_Creador")
+                    b.HasOne("CookItWebApi.Models.Perfil", "_Perfil")
                         .WithMany()
-                        .HasForeignKey("_Email");
+                        .HasForeignKey("_Email")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CookItWebApi.Models.Receta", "_Receta")
-                        .WithMany("_ComentariosReceta")
+                        .WithMany("_ListaComentariosReceta")
                         .HasForeignKey("_IdReceta")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.HistorialReceta", b =>
                 {
                     b.HasOne("CookItWebApi.Models.Usuario", "_Usuario")
-                        .WithOne()
-                        .HasForeignKey("CookItWebApi.Models.HistorialReceta", "_Email")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("_Email")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CookItWebApi.Models.Receta", "_Receta")
-                        .WithOne()
-                        .HasForeignKey("CookItWebApi.Models.HistorialReceta", "_IdReceta")
+                        .WithMany()
+                        .HasForeignKey("_IdReceta")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -619,12 +637,12 @@ namespace CookItWebApi.Migrations
                     b.HasOne("CookItWebApi.Models.Estacion", "_Estacion")
                         .WithMany()
                         .HasForeignKey("_IdEstacion")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CookItWebApi.Models.TipoIngrediente", "_TipoIngrediente")
                         .WithMany()
                         .HasForeignKey("_IdTipoIngrediente")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.IngredienteReceta", b =>
@@ -635,14 +653,14 @@ namespace CookItWebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CookItWebApi.Models.Receta", "_Receta")
-                        .WithMany("_IngredientesReceta")
+                        .WithMany("_ListaIngredientesReceta")
                         .HasForeignKey("_IdReceta")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.IngredienteUsuario", b =>
                 {
-                    b.HasOne("CookItWebApi.Models.Usuario", "_UserInfo")
+                    b.HasOne("CookItWebApi.Models.Perfil", "_Perfil")
                         .WithMany()
                         .HasForeignKey("_Email")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -650,49 +668,57 @@ namespace CookItWebApi.Migrations
                     b.HasOne("CookItWebApi.Models.Ingrediente", "_Ingrediente")
                         .WithMany()
                         .HasForeignKey("_IdIngrediente")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("CookItWebApi.Models.Notificacion", b =>
+                {
+                    b.HasOne("CookItWebApi.Models.Perfil", "_Perfil")
+                        .WithMany("_ListaNotificaciones")
+                        .HasForeignKey("_Email")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.PasoReceta", b =>
                 {
                     b.HasOne("CookItWebApi.Models.Receta", "_Receta")
-                        .WithMany("_Pasos")
+                        .WithMany("_ListaPasosReceta")
                         .HasForeignKey("_IdReceta")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.Perfil", b =>
                 {
                     b.HasOne("CookItWebApi.Models.Usuario", "_Usuario")
-                        .WithOne("_Perfil")
-                        .HasForeignKey("CookItWebApi.Models.Perfil", "_Email")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("_Email")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.Receta", b =>
                 {
-                    b.HasOne("CookItWebApi.Models.Usuario", "_Usuario")
+                    b.HasOne("CookItWebApi.Models.Perfil", "_Perfil")
                         .WithMany()
                         .HasForeignKey("_Email")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CookItWebApi.Models.Estacion", "_Estacion")
                         .WithMany()
                         .HasForeignKey("_IdEstacion")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CookItWebApi.Models.MomentoDia", "_MomentoDia")
                         .WithMany()
                         .HasForeignKey("_IdMomentoDia")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.RecetaFavorita", b =>
                 {
-                    b.HasOne("CookItWebApi.Models.Usuario", "_Usuario")
-                        .WithOne()
-                        .HasForeignKey("CookItWebApi.Models.RecetaFavorita", "_Email")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("CookItWebApi.Models.Perfil", "_Perfil")
+                        .WithMany()
+                        .HasForeignKey("_Email")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CookItWebApi.Models.Receta", "_Receta")
                         .WithOne()
@@ -702,13 +728,25 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.Reto", b =>
                 {
-                    b.HasOne("CookItWebApi.Models.EstadoReto", "_Estado")
-                        .WithMany()
-                        .HasForeignKey("_Estado_IdEstadoReto");
+                    b.HasOne("CookItWebApi.Models.Perfil", "_PerfilUsuOri")
+                        .WithMany("_ListaRetos")
+                        .HasForeignKey("_EmailUsuOri")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("CookItWebApi.Models.Usuario", "_Usuario")
+                    b.HasOne("CookItWebApi.Models.Perfil", "_PerfilUsuDes")
                         .WithMany()
-                        .HasForeignKey("_Usuario_Email");
+                        .HasForeignKey("_EmialUsuDes")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CookItWebApi.Models.EstadoReto", "_EstadoReto")
+                        .WithMany()
+                        .HasForeignKey("_IdEstadoReto")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CookItWebApi.Models.Receta", "_Receta")
+                        .WithMany()
+                        .HasForeignKey("_RecetaId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

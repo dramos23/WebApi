@@ -13,7 +13,6 @@ namespace CookItWebApi.Models
     {
 
         public int _IdReceta { set; get; }
-
         [JsonIgnore]
         public Receta _Receta { set; get; }
         [Required]

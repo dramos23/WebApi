@@ -38,9 +38,14 @@ namespace CookItWebApi.Controllers
         {
 
 
-            Receta receta = _Context.Recetas.Include(r => r._IngredientesReceta).Include(r => r._ComentariosReceta).Include(r => r._Pasos).FirstOrDefault(r => r._IdReceta == id);
-            List<IngredienteReceta> ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == id).Include(x => x._Ingrediente).ToList();
-            receta._IngredientesReceta = ingredientesReceta;
+            Receta receta = _Context.Recetas
+                .Include(r => r._ListaIngredientesReceta)
+                .Include(r => r._ListaComentariosReceta)
+                .Include(r => r._ListaPasosReceta)
+                .FirstOrDefault(r => r._IdReceta == id);
+
+            //List<IngredienteReceta> ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == id).Include(x => x._Ingrediente).ToList();
+            //receta._ListaIngredientesReceta = ingredientesReceta;
 
             if (receta == null)
             {
@@ -57,7 +62,7 @@ namespace CookItWebApi.Controllers
         public IActionResult ObtenerRecetasFiltro([FromBody] Dictionary<string, string> obj)
         {
 
-            var _Recetas = _Context.Recetas.ToList();
+            List<Receta> _Recetas = _Context.Recetas.ToList();
             _Recetas = (obj.ContainsKey("AptoCeliaco")) ? _Recetas.FindAll(x => x._AptoCeliacos == Boolean.Parse(obj["AptoCeliaco"])) : _Recetas;
             _Recetas = (obj.ContainsKey("AptoDiabetico")) ? _Recetas.FindAll(x => x._AptoDiabeticos == Boolean.Parse(obj["AptoDiabetico"])) : _Recetas;
             _Recetas = (obj.ContainsKey("AptoVegano")) ? _Recetas.FindAll(x => x._AptoVeganos == Boolean.Parse(obj["AptoVegano"])) : _Recetas;

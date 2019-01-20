@@ -23,12 +23,9 @@ namespace CookItWebApi.Models
         public DbSet<RecetaFavorita> RecetasFavoritas { get; set; }    
         public DbSet<TipoIngrediente> TiposIngredientes { get; set; }
         public DbSet<Estacion> Estaciones { get; set; }
-
         public DbSet<EstadoReto> EstadosRetos { get; set; }
-
         public DbSet<Reto> Retos { get; set; }
-
-
+        public DbSet<Notificacion> Notificaciones { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
@@ -45,17 +42,49 @@ namespace CookItWebApi.Models
         {
             modelBuilder.Entity<Ingrediente>()
                 .Property(f => f._IdIngrediente)
-                .ValueGeneratedOnAdd();
+                .UseSqlServerIdentityColumn();
             modelBuilder.Entity<Ingrediente>()
                 .HasKey(r => r._IdIngrediente);
             modelBuilder.Entity<Ingrediente>()
                 .HasIndex(u => u._Nombre).IsUnique();
+            modelBuilder.Entity<Ingrediente>()
+                .HasOne(a => a._Estacion)
+                .WithMany()
+                .HasForeignKey(c => c._IdEstacion)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Ingrediente>()
+                .HasOne(a => a._TipoIngrediente)
+                .WithMany()
+                .HasForeignKey(c => c._IdTipoIngrediente)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Receta>()
                 .HasKey(r => r._IdReceta);
             modelBuilder.Entity<Receta>()
                 .Property(r => r._IdReceta)
                 .UseSqlServerIdentityColumn();
+            modelBuilder.Entity<Receta>()
+                .HasOne(a => a._Perfil)
+                .WithMany()
+                .HasForeignKey(a => a._Email)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Receta>()
+                .HasOne(a => a._MomentoDia)
+                .WithMany()
+                .HasForeignKey(a => a._IdMomentoDia)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Receta>()
+                .HasOne(a => a._Estacion)
+                .WithMany()
+                .HasForeignKey(a => a._IdEstacion)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Receta>()
+                .Ignore(p => p._ListaComentariosReceta);
+            modelBuilder.Entity<Receta>()
+                .Ignore(p => p._ListaIngredientesReceta);
+            modelBuilder.Entity<Receta>()
+                .Ignore(p => p._ListaPasosReceta);
+
 
             modelBuilder.Entity<IngredienteReceta>()
                 .ToTable("IngredientesRecetas");                           
@@ -63,37 +92,64 @@ namespace CookItWebApi.Models
                 .HasKey(c => new { c._IdReceta , c._IdIngrediente });
             modelBuilder.Entity<IngredienteReceta>()
                 .HasOne(c => c._Receta)
-                .WithMany(r => r._IngredientesReceta)
+                .WithMany(r => r._ListaIngredientesReceta)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<IngredienteUsuario>()
+                .ToTable("IngredientesUsuarios");
+            modelBuilder.Entity<IngredienteUsuario>()
+                .HasKey(c => new { c._Email, c._IdIngrediente });
+            modelBuilder.Entity<IngredienteUsuario>()
+                .HasOne(c => c._Perfil)                
+                .WithMany(c => c._ListaIngredientesUsuario)
+                .HasForeignKey(c => c._Email)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<IngredienteUsuario>()
+                .HasOne(c => c._Ingrediente)
+                .WithMany()
+                .HasForeignKey(c => c._IdIngrediente)
+                .OnDelete(DeleteBehavior.Restrict);            
 
             modelBuilder.Entity<PasoReceta>()
                 .HasKey(c => new { c._IdPasoReceta, c._IdReceta });
             modelBuilder.Entity<PasoReceta>()
                 .Property(r => r._IdPasoReceta)
                 .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<IngredienteUsuario>()
-                .ToTable("IngredientesUsuarios");
-            modelBuilder.Entity<IngredienteUsuario>()
-                .HasKey(c => new { c._IdIngrediente, c._Email });
-
+            modelBuilder.Entity<PasoReceta>()
+                .HasOne(c => c._Receta)
+                .WithMany(c => c._ListaPasosReceta)
+                .HasForeignKey(c => c._IdReceta)
+                .OnDelete(DeleteBehavior.Restrict);            
 
             modelBuilder.Entity<ComentarioReceta>()
-                .HasKey(c => new { c._IdReceta, c._IdComentario });
+                .HasKey(c => c._IdComentario);
             modelBuilder.Entity<ComentarioReceta>()
                 .Property(f => f._IdComentario)
                 .UseSqlServerIdentityColumn();
+            modelBuilder.Entity<ComentarioReceta>()
+                .HasOne(c => c._Receta)
+                .WithMany(c => c._ListaComentariosReceta)
+                .HasForeignKey(a => a._IdReceta)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ComentarioReceta>()
+                .HasOne(c => c._Perfil)
+                .WithMany()
+                .HasForeignKey(a => a._Email)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             modelBuilder.Entity<HistorialReceta>()
-                .Property(f => f._IdHistorialReceta).ValueGeneratedOnAdd();
+                .HasKey(c => new { c._Email, c._IdReceta, c._FechaHora });
             modelBuilder.Entity<HistorialReceta>()
-                .HasKey(c => new { c._Email, c._IdReceta, c._IdHistorialReceta });
+                .HasOne(c => c._Receta)
+                .WithMany()
+                .HasForeignKey(a => a._IdReceta)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<HistorialReceta>()
-                .HasOne(a => a._Receta)
-                .WithOne().OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<HistorialReceta>()
-                .HasOne(a => a._Usuario)
-                .WithOne().OnDelete(DeleteBehavior.Restrict);
+                .HasOne(c => c._Usuario)
+                .WithMany(c => c._ListaHistorialRecetas)
+                .HasForeignKey(a => a._Email)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<RecetaFavorita>()
                 .HasKey(c => new { c._Email, c._IdReceta });
@@ -101,12 +157,15 @@ namespace CookItWebApi.Models
                 .HasOne(a => a._Receta)
                 .WithOne().OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RecetaFavorita>()
-                .HasOne(a => a._Usuario)
-                .WithOne().OnDelete(DeleteBehavior.Restrict);
+                .HasOne(a => a._Perfil)
+                .WithMany(a => a._ListaRecetasFavoritas)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<TipoIngrediente>()
                 .Property(f => f._IdTipoIngrediente)
                 .ValueGeneratedOnAdd();
+            modelBuilder.Entity<TipoIngrediente>()
+                .HasKey(c => c._IdTipoIngrediente);
             modelBuilder.Entity<TipoIngrediente>()
                 .HasIndex(u => u._Nombre).IsUnique();
 
@@ -114,16 +173,44 @@ namespace CookItWebApi.Models
                 .Property(f => f._IdMomentoDia)
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<MomentoDia>()
+                .HasKey(c => c._IdMomentoDia);
+            modelBuilder.Entity<MomentoDia>()
                 .HasIndex(u => u._Nombre).IsUnique();
 
             modelBuilder.Entity<Estacion>()
                 .Property(f => f._IdEstacion)
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<Estacion>()
+                .HasKey(c => c._IdEstacion);
+            modelBuilder.Entity<Estacion>()
                 .HasIndex(u => u._Nombre).IsUnique();
 
             modelBuilder.Entity<Usuario>()
                 .HasKey(c => c._Email);
+            modelBuilder.Entity<Usuario>()
+                .Ignore(p => p._Perfil);
+            modelBuilder.Entity<Usuario>()
+                .Ignore(p => p._Password);
+            modelBuilder.Entity<Usuario>()
+                .Ignore(p => p._ListaHistorialRecetas);
+
+
+            modelBuilder.Entity<Perfil>()
+                .HasKey(c => c._Email);            
+            modelBuilder.Entity<Perfil>()
+                .HasOne(c => c._Usuario) 
+                .WithMany()
+                .HasForeignKey(c => c._Email)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Perfil>()
+                .Ignore(p => p._ListaIngredientesUsuario);
+            modelBuilder.Entity<Perfil>()
+                .Ignore(p => p._ListaNotificaciones);
+            modelBuilder.Entity<Perfil>()
+                .Ignore(p => p._ListaRetos);
+            modelBuilder.Entity<Perfil>()
+                .Ignore(p => p._ListaRecetasFavoritas);
+
 
             modelBuilder.Entity<EstadoReto>()
                 .Property(f => f._IdEstadoReto)
@@ -134,14 +221,35 @@ namespace CookItWebApi.Models
                 .HasIndex(u => u._Estado).IsUnique();
 
             modelBuilder.Entity<Reto>()
-                .HasKey(c => new { c._EmailUsuarioOrigen, c._EmialUsuarioDestino, c._RecetaId, c._Cumplido });
+                .HasKey(c => new { c._EmailUsuOri, c._EmialUsuDes, c._RecetaId, c._Cumplido });
+            modelBuilder.Entity<Reto>()
+                .HasOne(c => c._PerfilUsuOri)
+                .WithMany(c => c._ListaRetos)
+                .HasForeignKey(c => c._EmailUsuOri)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Reto>()
+                .HasOne(c => c._PerfilUsuDes)
+                .WithMany()
+                .HasForeignKey(c => c._EmialUsuDes)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Reto>()
+                .HasOne(a => a._EstadoReto)
+                .WithMany()
+                .HasForeignKey(c => c._IdEstadoReto)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Reto>()
+                .HasOne(a => a._Receta)
+                .WithMany()
+                .HasForeignKey(c => c._RecetaId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<Receta>()
-            //    .HasOne(a => a._MomentoDia)
-            //    .WithOne().OnDelete(DeleteBehavior.Restrict);
-            //modelBuilder.Entity<Receta>()
-            //    .HasOne(a => a._Estacion)
-            //    .WithOne().OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Notificacion>()
+                .HasKey(n => n._NotificacionId);
+            modelBuilder.Entity<Notificacion>()
+                .HasOne(a => a._Perfil)
+                .WithMany(a => a._ListaNotificaciones)
+                .HasForeignKey(c => c._Email)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             base.OnModelCreating(modelBuilder);

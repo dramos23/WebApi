@@ -26,10 +26,10 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet(Name = "ListEmailNombres")]
+        [HttpGet]
+        [Route("ListEmailNombres")]
         public IEnumerable<Perfil> Get()
         {
-
             return _Context.Perfiles.Select(a => new Perfil { _Email = a._Email, _NombreUsuario = a._NombreUsuario }).ToList();
         }
 
@@ -37,7 +37,15 @@ namespace CookItWebApi.Controllers
         public IActionResult GetbyId(string email)
         {
 
-            var _Perfil = _Context.Perfiles.FirstOrDefault(x => x._Email == email);
+            Perfil _Perfil = _Context.Perfiles
+                .Include(p => p._ListaIngredientesUsuario)
+                .Include(p => p._ListaNotificaciones)
+                .Include(p => p._ListaRecetasFavoritas)
+                .Include(p => p._ListaRetos)
+                .FirstOrDefault(x => x._Email == email);
+
+            //List<IngredienteUsuario> ingredientesUsuario = _Context.IngredienteUsuarios.Where(x => x._Email == email).Include(x => x._Ingrediente).ToList();
+            //_Perfil._ListaIngredientesUsuario = ingredientesUsuario;
 
             if (_Perfil == null)
             {
@@ -65,11 +73,11 @@ namespace CookItWebApi.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpPut("{email}")]
-        public IActionResult Put([FromBody] Perfil _Perfil, string email)
+        [HttpPut]
+        public IActionResult Put([FromBody] Perfil _Perfil)
         {
 
-            if (_Perfil._Email != email)
+            if (_Perfil._Email == null)
             {
 
                 return BadRequest(ModelState);

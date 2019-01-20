@@ -66,35 +66,6 @@ namespace CookItWebApi.Controllers
             return BadRequest(ModelState);
         }
 
-        //SE UTILIZA MOMENTANEAMENTE PARA DAR DE ALTA UNA LISTA DE INGREDIENTES DESDE POSTMAN
-
-        [HttpPost]
-        [Route("Lista")]
-        public IActionResult Post([FromBody] IngredientesAux ingredientes)
-        {
-
-            if (ModelState.IsValid)
-            {
-                foreach (Ingrediente ing in ingredientes.ListIng)
-                {
-                    _Context.Ingredientes.Add(ing);
-                }
-                try
-                {
-                    _Context.SaveChanges();
-                    return Ok();
-                }
-                catch(Exception ex) {
-                    return BadRequest(ex);
-                }
-                
-                
-
-            }
-
-            return BadRequest(ModelState);
-        }
-
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] Ingrediente ingrediente, int id) {
 

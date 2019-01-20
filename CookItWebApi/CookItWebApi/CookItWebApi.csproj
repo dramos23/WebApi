@@ -6,12 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190116210822_6.cs" />
+    <Compile Remove="Migrations\20190116210822_6.Designer.cs" />
+    <Compile Remove="Migrations\20190119015850_10.cs" />
+    <Compile Remove="Migrations\20190119015850_10.Designer.cs" />
+    <Compile Remove="Migrations\20190119020526_11.cs" />
+    <Compile Remove="Migrations\20190119020526_11.Designer.cs" />
+    <Compile Remove="Migrations\20190119034038_2.cs" />
+    <Compile Remove="Migrations\20190119034038_2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
       <PrivateAssets>all</PrivateAssets>

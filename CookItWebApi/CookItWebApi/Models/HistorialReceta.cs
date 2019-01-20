@@ -11,19 +11,15 @@ namespace CookItWebApi.Models
     //[Table("HistorialRecetas")]
     public class HistorialReceta
     {
-       
-        
-
+                       
         public string _Email { get; set; }
-        public int _IdHistorialReceta { get; set; }
-
         [JsonIgnore]
-        public virtual Usuario _Usuario { get; set; }
+        public Usuario _Usuario { get; set; }
 
         public int _IdReceta { get; set; }
-        public virtual Receta _Receta { get; set; }
+        [JsonIgnore]
+        public Receta _Receta { get; set; }        
 
-        [Required]
         public DateTime _FechaHora { get; set; }        
         
     }

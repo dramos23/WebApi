@@ -9,10 +9,6 @@ namespace CookItWebApi.Models
         public int _IdEstadoReto { get; set; }
         public string _Estado { get; set; }
 
-        public EstadoReto(int IdEstadoReto, string Estado)
-        {
-            _IdEstadoReto = IdEstadoReto;
-            _Estado = Estado;
-        }
+
     }
 }

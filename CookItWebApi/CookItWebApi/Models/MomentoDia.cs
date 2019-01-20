@@ -9,8 +9,7 @@ namespace CookItWebApi.Models
 {
     //[Table("MomentosDias")]
     public class MomentoDia
-    {
-        [Key]
+    {        
         public int _IdMomentoDia { get; set; }
         [Required]
         public string _Nombre { get; set; }

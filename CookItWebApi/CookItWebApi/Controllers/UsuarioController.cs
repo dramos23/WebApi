@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using CookItWebApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -73,8 +75,12 @@ namespace CookItWebApi.Controllers
                 var result = await _signInManager.PasswordSignInAsync(Usuario._Email, Usuario._Password,false,false);
                 if (result.Succeeded)
                 {
-                    IActionResult ret = BuildToken(Usuario);
-                    return ret;
+
+                    _Context.Entry(Usuario).Property("_DeviceId").IsModified = true;
+                    _Context.Entry(Usuario).Property("_UltimoIngreso").IsModified = true;
+                    _Context.SaveChanges();                   
+                    
+                    return BuildToken(Usuario);
                 }
                 else
                 {

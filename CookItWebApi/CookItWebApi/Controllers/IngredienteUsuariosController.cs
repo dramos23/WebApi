@@ -58,8 +58,8 @@ namespace CookItWebApi.Controllers
             if (ModelState.IsValid)
             {
 
-                IngredienteUsuario aux = _Context.IngredienteUsuarios.Find(_IngredienteUsuario);
-                if (aux != null)
+                IngredienteUsuario ing = _Context.IngredienteUsuarios.Find(_IngredienteUsuario);
+                if (ing != null)
                 {
                     return new CreatedAtRouteResult("ActualizarIngredienteUsuario", new { email = _IngredienteUsuario._Email, id = _IngredienteUsuario._IdIngrediente }, _IngredienteUsuario);
                 }

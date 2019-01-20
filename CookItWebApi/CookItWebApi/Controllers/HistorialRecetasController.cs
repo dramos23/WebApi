@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CookItWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,11 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet("{EmailUsu}")]
-        public IEnumerable<HistorialReceta> GetAll(string EmailUsu)
+        [HttpGet("{Email}")]
+        public IEnumerable<HistorialReceta> GetAll(string Email)
         {
 
-            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._Email == EmailUsu);
+            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._Email == Email).ToList();
 
             foreach (HistorialReceta x in _HistorialReceta)
             {
@@ -41,31 +42,24 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet("{EmailUsu},{Id}", Name = "HistorialRecetaCreado")]
-        public IActionResult GetbyId(string EmailUsu, int Id)
+        [HttpGet("{Email},{RecetaId},{FechaHora}", Name = "HistorialRecetaCreado")]
+        public IActionResult GetbyId(string Email, int RecetaId, DateTime FechaHora)
         {
 
-            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._Email == EmailUsu && x._IdHistorialReceta == Id);
-            
+            HistorialReceta _HistorialReceta = _Context.HistorialRecetas.FirstOrDefault(x => x._Email == Email && x._IdReceta == RecetaId && x._FechaHora == FechaHora);
 
-            foreach (HistorialReceta x in _HistorialReceta) {
 
-                var _Receta = _Context.Recetas.Where(r => r._IdReceta == x._IdReceta);
-
-                foreach (Receta r in _Receta)
-                {
-                    x._Receta = r;
-                }
-
-            }
-
-            if (_HistorialReceta == null)
+            if (_HistorialReceta != null)
             {
 
-                return NotFound();
+                Receta _Receta = _Context.Recetas.FirstOrDefault(r => r._IdReceta == _HistorialReceta._IdReceta);
+                _HistorialReceta._Receta = _Receta;
+                return Ok(_HistorialReceta);
+
             }
 
-            return Ok(_HistorialReceta);
+            return NotFound();
+            
 
         }
 

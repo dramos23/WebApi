@@ -54,6 +54,8 @@ namespace CookItWebApi
 
             services.AddMvc().AddJsonOptions(ConfigureJson);
 
+
+
         }
 
         private void ConfigureJson(MvcJsonOptions obj)
