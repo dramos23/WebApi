@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using CookItWebApi.Models;
 using CookItWebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,7 +42,7 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Reto reto)
+        public async Task<IActionResult> Post([FromBody] Reto reto)
         {
 
             if (ModelState.IsValid)
@@ -54,7 +55,8 @@ namespace CookItWebApi.Controllers
                     _Context.Retos.Add(reto);
                     _Context.SaveChanges();
 
-                    GenerarNotificacion(reto);
+                    var ret = await GenerarNotificacion(reto);
+                    
 
                     return Ok(reto);
                 }
@@ -67,7 +69,7 @@ namespace CookItWebApi.Controllers
             return BadRequest(ModelState);
         }
 
-        private async void GenerarNotificacion(Reto reto)
+        private async Task<IActionResult> GenerarNotificacion(Reto reto)
         {
             reto._PerfilUsuOri = _Context.Perfiles.Where(p => p._Email == reto._EmailUsuOri).FirstOrDefault();
             reto._PerfilUsuDes = _Context.Perfiles.Where(p => p._Email == reto._EmialUsuDes).FirstOrDefault();
@@ -93,6 +95,11 @@ namespace CookItWebApi.Controllers
 
                 _Context.Notificaciones.Add(notificacion);
                 _Context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
             }
         }
 

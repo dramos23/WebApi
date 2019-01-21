@@ -8,10 +8,10 @@ namespace CookItWebApi.Models
 {
 
     public class NotificacionAppCenter {
-
+        [JsonIgnore]
         [JsonProperty("notification_id")]
         public string Notification_id { get; set; }
-        [JsonProperty("notificacion_content")]
+        [JsonProperty("notification_content")]
         public NotificacionContent Notificacion_content { get; set; }
 
         public NotificacionAppCenter()
@@ -45,13 +45,14 @@ namespace CookItWebApi.Models
 
     public class NotificacionTarget {
 
+        [JsonProperty("type")]
         public const string type = "device_target";
         [JsonProperty("devices")]
         public List<System.Guid?> Devices { get; set; }
 
         public NotificacionTarget()
         {
-            
+            Devices = new List<Guid?>();
         }
     }
 }

@@ -25,41 +25,7 @@ namespace CookItWebApi.Controllers
         {
 
             var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._Email == Email).ToList();
-
-            foreach (HistorialReceta x in _HistorialReceta)
-            {
-
-                var _Receta = _Context.Recetas.Where(r => r._IdReceta == x._IdReceta);
-
-                foreach (Receta r in _Receta)
-                {
-                    x._Receta = r;
-                }
-
-            }
-
             return _HistorialReceta;
-
-        }
-
-        [HttpGet("{Email},{RecetaId},{FechaHora}", Name = "HistorialRecetaCreado")]
-        public IActionResult GetbyId(string Email, int RecetaId, DateTime FechaHora)
-        {
-
-            HistorialReceta _HistorialReceta = _Context.HistorialRecetas.FirstOrDefault(x => x._Email == Email && x._IdReceta == RecetaId && x._FechaHora == FechaHora);
-
-
-            if (_HistorialReceta != null)
-            {
-
-                Receta _Receta = _Context.Recetas.FirstOrDefault(r => r._IdReceta == _HistorialReceta._IdReceta);
-                _HistorialReceta._Receta = _Receta;
-                return Ok(_HistorialReceta);
-
-            }
-
-            return NotFound();
-            
 
         }
 

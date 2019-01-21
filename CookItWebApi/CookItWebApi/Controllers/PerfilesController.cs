@@ -37,15 +37,17 @@ namespace CookItWebApi.Controllers
         public IActionResult GetbyId(string email)
         {
 
-            Perfil _Perfil = _Context.Perfiles
-                .Include(p => p._ListaIngredientesUsuario)
-                .Include(p => p._ListaNotificaciones)
-                .Include(p => p._ListaRecetasFavoritas)
-                .Include(p => p._ListaRetos)
-                .FirstOrDefault(x => x._Email == email);
+            Perfil _Perfil = _Context.Perfiles.FirstOrDefault(x => x._Email == email);
 
-            //List<IngredienteUsuario> ingredientesUsuario = _Context.IngredienteUsuarios.Where(x => x._Email == email).Include(x => x._Ingrediente).ToList();
-            //_Perfil._ListaIngredientesUsuario = ingredientesUsuario;
+            List<IngredienteUsuario> ingredientesUsuario = _Context.IngredienteUsuarios.Where(x => x._Email == email).ToList();
+            List<Reto> retos = _Context.Retos.Where(r => r._EmailUsuOri == email || r._EmialUsuDes == email).ToList();
+            List<Notificacion> notificaciones = _Context.Notificaciones.Where(n => n._Email == email).ToList();
+            List<RecetaFavorita> recetaFavoritas = _Context.RecetasFavoritas.Where(rf => rf._Email == email).ToList();
+
+            _Perfil._ListaIngredientesUsuario = ingredientesUsuario;
+            _Perfil._ListaRetos = retos;
+            _Perfil._ListaNotificaciones = notificaciones;
+            _Perfil._ListaRecetasFavoritas = recetaFavoritas;
 
             if (_Perfil == null)
             {

@@ -17,7 +17,7 @@ namespace CookItWebApi.Services
 
         public NotificacionService()
         {
-            Token = "9451af063adc28188e26d9082f0a020afe944a4b";
+            Token = "8446c17b1645b71ed877b4c10fc25efe5ca312d5";
             Web = "https://appcenter.ms/api/v0.1/apps/daniel.r.23-gmail.com/CookIt/push/notifications";
 
         }
@@ -31,7 +31,7 @@ namespace CookItWebApi.Services
             using (HttpClient client = new HttpClient())
             using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, Url))
             {
-                client.DefaultRequestHeaders.Add("Authorization", "X-API-Token" + Token);
+                client.DefaultRequestHeaders.Add("X-API-Token", Token); ;
                 string json = JsonConvert.SerializeObject(obj);
                 using (StringContent stringContent = new StringContent(json, Encoding.UTF8, "application/json"))
                 {

@@ -38,14 +38,16 @@ namespace CookItWebApi.Controllers
         {
 
 
-            Receta receta = _Context.Recetas
-                .Include(r => r._ListaIngredientesReceta)
-                .Include(r => r._ListaComentariosReceta)
-                .Include(r => r._ListaPasosReceta)
-                .FirstOrDefault(r => r._IdReceta == id);
+            Receta receta = _Context.Recetas.FirstOrDefault(r => r._IdReceta == id);
+                
 
-            //List<IngredienteReceta> ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == id).Include(x => x._Ingrediente).ToList();
-            //receta._ListaIngredientesReceta = ingredientesReceta;
+            List<IngredienteReceta> ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == id).Include(x => x._Ingrediente).ToList();
+            List<PasoReceta> pasoRecetas = _Context.PasoRecetas.Where(x => x._IdReceta == id).ToList();
+            List<ComentarioReceta> comentarioRecetas = _Context.ComentarioRecetas.Where(x => x._IdReceta == id).ToList();
+
+            receta._ListaIngredientesReceta = ingredientesReceta;
+            receta._ListaPasosReceta = pasoRecetas;
+            receta._ListaComentariosReceta = comentarioRecetas;
 
             if (receta == null)
             {
