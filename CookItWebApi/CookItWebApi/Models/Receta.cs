@@ -63,9 +63,9 @@ namespace CookItWebApi.Models
 
         public Receta() {
 
-            _ListaIngredientesReceta = new List<IngredienteReceta>();
-            _ListaPasosReceta = new List<PasoReceta>();
-            _ListaComentariosReceta = new List<ComentarioReceta>();
+            //_ListaIngredientesReceta = new List<IngredienteReceta>();
+            //_ListaPasosReceta = new List<PasoReceta>();
+            //_ListaComentariosReceta = new List<ComentarioReceta>();
         }
 
     }

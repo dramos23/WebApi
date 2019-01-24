@@ -48,9 +48,9 @@ namespace CookItWebApi.Models
         public int _FiltroCaloriasMin { set; get; }
         [Required]        
         public int _FiltroCaloriasMax { set; get; }
-        [Required]
-        public bool _FiltroPaisOrigen { set; get; }
-        public int? _FiltroPaisOrigenId { set; get; }
+        //[Required]
+        //public bool _FiltroPaisOrigen { set; get; }
+        //public int _FiltroPaisOrigenId { set; get; }
         [Required]
         public bool _FiltroMomentoDia { set; get; }        
         public int? _FiltroMomentoDiaId { set; get; }
@@ -83,17 +83,21 @@ namespace CookItWebApi.Models
         [Required]        
         public int _FiltroTiempoPreparacionMax { set; get; }        
 
+        [JsonIgnore]
         public List<IngredienteUsuario> _ListaIngredientesUsuario { get; set; }
+        [JsonIgnore]
         public List<Reto> _ListaRetos { get; set; }
+        [JsonIgnore]
         public List<Notificacion> _ListaNotificaciones { get; set; }
+        [JsonIgnore]
         public List<RecetaFavorita> _ListaRecetasFavoritas { get; set; }
 
         public Perfil()
         {
-            _ListaIngredientesUsuario = new List<IngredienteUsuario>();
-            _ListaRetos = new List<Reto>();
-            _ListaNotificaciones = new List<Notificacion>();
-            _ListaRecetasFavoritas = new List<RecetaFavorita>();
+            //_ListaIngredientesUsuario = new List<IngredienteUsuario>();
+            //_ListaRetos = new List<Reto>();
+            //_ListaNotificaciones = new List<Notificacion>();
+            //_ListaRecetasFavoritas = new List<RecetaFavorita>();
         }
     }
 
