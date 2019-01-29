@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,8 +27,20 @@ namespace CookItWebApi.Models
 
         public string _Titulo { get; set; }
 
-        public string _Descripción { get; set; }
+        public string _Descripcion { get; set; }
 
+        public string _Pk1 { get; set; }
 
+        public string _Pk2 { get; set; }
+
+        public string _Pk3 { get; set; }
+
+        public string _Pk4 { get; set; }
+        public string _Tabla { get; set; }
+
+        public Notificacion()
+        {
+            //_Claves = new Dictionary<string, int>();
+        }
     }
 }

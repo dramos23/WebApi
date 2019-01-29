@@ -240,13 +240,23 @@ namespace CookItWebApi.Migrations
                     b.Property<string>("_NotificacionId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("_Descripción");
+                    b.Property<string>("_Descripcion");
 
                     b.Property<string>("_Email");
 
                     b.Property<int>("_Estado");
 
                     b.Property<DateTime>("_FechaHora");
+
+                    b.Property<string>("_Pk1");
+
+                    b.Property<string>("_Pk2");
+
+                    b.Property<string>("_Pk3");
+
+                    b.Property<string>("_Pk4");
+
+                    b.Property<string>("_Tabla");
 
                     b.Property<string>("_Titulo");
 
@@ -319,10 +329,6 @@ namespace CookItWebApi.Migrations
                     b.Property<bool>("_FiltroMomentoDia");
 
                     b.Property<int?>("_FiltroMomentoDiaId");
-
-                    b.Property<bool>("_FiltroPaisOrigen");
-
-                    b.Property<int?>("_FiltroPaisOrigenId");
 
                     b.Property<bool>("_FiltroPrecio");
 

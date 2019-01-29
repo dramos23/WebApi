@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CookItWebApi.Models;
@@ -83,6 +84,7 @@ namespace CookItWebApi.Controllers
             NotificacionAppCenter appCenter = await notificacionService.Alta(notificacionAppCenter);
             if (appCenter != null)
             {
+
                 Notificacion notificacion = new Notificacion()
                 {
                     _NotificacionId = appCenter.Notification_id,
@@ -90,7 +92,12 @@ namespace CookItWebApi.Controllers
                     _Estado = Notificacion.Estado.SinLeer,
                     _FechaHora = DateTime.Now,
                     _Titulo = notificacionAppCenter.Notificacion_content.Title,
-                    _Descripción = notificacionAppCenter.Notificacion_content.Body
+                    _Descripcion = notificacionAppCenter.Notificacion_content.Body,
+                    _Tabla = "Reto",
+                    _Pk1 = reto._EmailUsuOri,
+                    _Pk2 = reto._EmialUsuDes,
+                    _Pk3 = reto._RecetaId.ToString(),
+                    _Pk4 = reto._Cumplido.ToString()
                 };
 
                 _Context.Notificaciones.Add(notificacion);

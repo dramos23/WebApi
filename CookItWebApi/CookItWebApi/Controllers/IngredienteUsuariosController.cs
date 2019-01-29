@@ -26,10 +26,10 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpGet("{email}")]
-        public IEnumerable<IngredienteUsuario> GetbyEmail(string _Email)
+        public IEnumerable<IngredienteUsuario> GetbyEmail(string email)
         {
-
-            return _Context.IngredienteUsuarios.Where(x => x._Email == _Email).ToList();
+            List<IngredienteUsuario> ingredienteUsuarios = _Context.IngredienteUsuarios.Where(x => x._Email == email).ToList();
+            return ingredienteUsuarios;
 
         }
 
@@ -37,37 +37,38 @@ namespace CookItWebApi.Controllers
         public IActionResult GetbyId(string _Email, int _IdIngrediente)
         {
 
-            var _IngredienteUsuario = _Context.IngredienteUsuarios
-                    .Where(x => x._Email == _Email)
-                    .Where(x => x._IdIngrediente == _IdIngrediente);
+            IngredienteUsuario ingredienteUsuario = _Context.IngredienteUsuarios.FirstOrDefault(iu => iu._Email == _Email && iu._IdIngrediente == _IdIngrediente);
 
-            if (_IngredienteUsuario == null)
+            if (ingredienteUsuario == null)
             {
 
                 return NotFound();
             }
 
-            return new ObjectResult(_IngredienteUsuario);
+            return new ObjectResult(ingredienteUsuario);
 
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] IngredienteUsuario _IngredienteUsuario)
+        public IActionResult Post([FromBody] IngredienteUsuario IngredienteUsuario)
         {
 
             if (ModelState.IsValid)
             {
 
-                IngredienteUsuario ing = _Context.IngredienteUsuarios.Find(_IngredienteUsuario);
-                if (ing != null)
+                IngredienteUsuario ingredienteUsuario = _Context.IngredienteUsuarios.FirstOrDefault(iu => iu._Email == IngredienteUsuario._Email && iu._IdIngrediente == IngredienteUsuario._IdIngrediente);
+                if (ingredienteUsuario != null)
                 {
-                    return new CreatedAtRouteResult("ActualizarIngredienteUsuario", new { email = _IngredienteUsuario._Email, id = _IngredienteUsuario._IdIngrediente }, _IngredienteUsuario);
+                    ingredienteUsuario._Cantidad += IngredienteUsuario._Cantidad;
+                    _Context.Entry(ingredienteUsuario).State = EntityState.Modified;
+                    _Context.SaveChanges();
+                    return new CreatedAtRouteResult("IngredienteUsuarioCreado", new { email = ingredienteUsuario._Email, id = ingredienteUsuario._IdIngrediente }, ingredienteUsuario);
                 }
                 else { 
 
-                    _Context.IngredienteUsuarios.Add(_IngredienteUsuario);
+                    _Context.IngredienteUsuarios.Add(IngredienteUsuario);
                     _Context.SaveChanges();
-                    return new CreatedAtRouteResult("IngredienteUsuarioCreado", new {email = _IngredienteUsuario._Email, id = _IngredienteUsuario._IdIngrediente}, _IngredienteUsuario);
+                    return new CreatedAtRouteResult("IngredienteUsuarioCreado", new {email = IngredienteUsuario._Email, id = IngredienteUsuario._IdIngrediente}, IngredienteUsuario);
                 }
 
             }
@@ -75,41 +76,22 @@ namespace CookItWebApi.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpPut("{email},{id}", Name = "ActualizarIngredienteUsuario")]
-        public IActionResult Put([FromBody] IngredienteUsuario _IngredienteUsuario, string _Email, int _IdIngrediente)
-        {
-
-            if ((_IngredienteUsuario._Email != _Email) || (_IngredienteUsuario._IdIngrediente != _IdIngrediente))
-            {
-
-                return BadRequest(ModelState);
-
-            }
-
-            _Context.Entry(_IngredienteUsuario).State = EntityState.Modified;
-            _Context.SaveChanges();
-            return Ok();
-
-        }
-
         [HttpDelete("{email},{id}")]
-        public IActionResult Delete(string _Email, int _IdIngrediente)
+        public IActionResult Delete(string Email, int Id)
         {
 
-            var _IngredienteUsuario = (IngredienteUsuario) _Context.IngredienteUsuarios
-                                                                .Where(x => x._Email == _Email)
-                                                                .Where(x => x._IdIngrediente == _IdIngrediente);
+            IngredienteUsuario ingredienteUsuario = _Context.IngredienteUsuarios.FirstOrDefault(iu => iu._Email == Email && iu._IdIngrediente == Id);
 
-            if (_IngredienteUsuario._Email != _Email || _IngredienteUsuario._IdIngrediente != _IdIngrediente)
+            if (ingredienteUsuario == null)
             {
 
                 return NotFound();
 
             }
 
-            _Context.IngredienteUsuarios.Remove(_IngredienteUsuario);
+            _Context.IngredienteUsuarios.Remove(ingredienteUsuario);
             _Context.SaveChanges();
-            return Ok(_IngredienteUsuario);
+            return Ok(ingredienteUsuario);
 
         }
     }
