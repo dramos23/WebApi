@@ -19,6 +19,8 @@ namespace CookItWebApi.Models
         [Required]
         public int _Cantidad { get; set; }
 
+        public Ingrediente.TipoMedida _Medida { get; set; }
+
 
     }
 }

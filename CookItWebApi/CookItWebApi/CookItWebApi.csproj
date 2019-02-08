@@ -14,13 +14,17 @@
     <Compile Remove="Migrations\20190119020526_11.Designer.cs" />
     <Compile Remove="Migrations\20190119034038_2.cs" />
     <Compile Remove="Migrations\20190119034038_2.Designer.cs" />
+    <Compile Remove="Migrations\20190206182720_20.cs" />
+    <Compile Remove="Migrations\20190206182720_20.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="3.0.0" />

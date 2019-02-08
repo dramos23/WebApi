@@ -81,9 +81,11 @@ namespace CookItWebApi.Models
         [Required]        
         public int _FiltroTiempoPreparacionMin { set; get; }
         [Required]        
-        public int _FiltroTiempoPreparacionMax { set; get; }        
+        public int _FiltroTiempoPreparacionMax { set; get; }
+        [Required]
+        public bool _FiltroIngredientes { set; get; }
 
-        
+
         public List<IngredienteUsuario> _ListaIngredientesUsuario { get; set; }
         
         public List<Reto> _ListaRetos { get; set; }

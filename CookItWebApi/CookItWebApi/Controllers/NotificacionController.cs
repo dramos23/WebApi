@@ -14,7 +14,6 @@ namespace CookItWebApi.Controllers
     [Produces("application/json")]
     [Route("api/Notificacion")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [ApiController]
     public class NotificacionController : ControllerBase
     {
         private readonly ApplicationDbContext _Context;
@@ -26,11 +25,33 @@ namespace CookItWebApi.Controllers
 
         }
 
+        [HttpGet]
+        [Route("ObtenerNotificacion/{email}")]
+        public IActionResult GetActionResult(string email)
+        {
+            var noti = _Context.Notificaciones.FirstOrDefault(n => n._Email == email && n._FechaHora == (_Context.Notificaciones.Where(m => m._Email == email).Max(m => m._FechaHora)));
+
+            if (noti != null)
+            {
+                return Ok(noti);
+            }
+
+            return NotFound(); ;
+        }
+
+        [HttpGet]
+        [Route("ObtenerNotificaciones/{email}")]
+        public IEnumerable<Notificacion> GetbyEmail(string email)
+        {
+            return _Context.Notificaciones.Where(n => n._Email == email).ToList();            
+
+        }
+
         [HttpPut]
         [Route("CambioEstado")]
-        public IActionResult Put([FromBody] Notificacion  notificacion)
+        public IActionResult Put([FromBody] Notificacion notificacion)
         {
-            var noti = _Context.Notificaciones.FirstOrDefault(n => n._NotificacionId == notificacion._NotificacionId);            
+            var noti = _Context.Notificaciones.FirstOrDefault(n => n._NotificacionId == notificacion._NotificacionId);
 
             if (noti != null)
             {
@@ -42,8 +63,11 @@ namespace CookItWebApi.Controllers
 
             return BadRequest(ModelState);
 
-            
+
 
         }
+
+
+
     }
 }

@@ -98,15 +98,19 @@ namespace CookItWebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Receta Receta)
         {
-            
-            foreach (IngredienteReceta ingredienteReceta in Receta._ListaIngredientesReceta) {
+            if (Receta._ListaIngredientesReceta.Count > 0)
+            {
 
-                Ingrediente ingrediente = _Context.Ingredientes.FirstOrDefault(i => i._IdIngrediente == ingredienteReceta._IdIngrediente);
-                ingredienteReceta._Ingrediente = ingrediente;
+                foreach (IngredienteReceta ingredienteReceta in Receta._ListaIngredientesReceta)
+                {
 
+                    Ingrediente ingrediente = _Context.Ingredientes.FirstOrDefault(i => i._IdIngrediente == ingredienteReceta._IdIngrediente);
+                    ingredienteReceta._Ingrediente = ingrediente;
+
+                }
+
+                Receta.CalcularAtributos();
             }
-
-            Receta.CalcularAtributos();
 
             if (ModelState.IsValid)
             {

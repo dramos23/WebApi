@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace CookItWebApi.Models
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
-    }
+
+        public ApplicationUser(){}
+
+
+        
+     }
 }

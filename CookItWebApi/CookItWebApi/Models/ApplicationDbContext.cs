@@ -26,6 +26,7 @@ namespace CookItWebApi.Models
         public DbSet<EstadoReto> EstadosRetos { get; set; }
         public DbSet<Reto> Retos { get; set; }
         public DbSet<Notificacion> Notificaciones { get; set; }
+        public DbSet<Supermercado> Supermercados { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
@@ -111,10 +112,10 @@ namespace CookItWebApi.Models
                 .OnDelete(DeleteBehavior.Restrict);            
 
             modelBuilder.Entity<PasoReceta>()
-                .HasKey(c => new { c._IdPasoReceta, c._IdReceta });
-            modelBuilder.Entity<PasoReceta>()
-                .Property(r => r._IdPasoReceta)
-                .ValueGeneratedOnAdd();
+                .HasKey(c => new { c._IdReceta, c._IdPasoReceta});
+            //modelBuilder.Entity<PasoReceta>()
+            //    .Property(r => r._IdPasoReceta)
+            //    .ValueGeneratedOnAdd();
             modelBuilder.Entity<PasoReceta>()
                 .HasOne(c => c._Receta)
                 .WithMany(c => c._ListaPasosReceta)
@@ -221,7 +222,10 @@ namespace CookItWebApi.Models
                 .HasIndex(u => u._Estado).IsUnique();
 
             modelBuilder.Entity<Reto>()
-                .HasKey(c => new { c._EmailUsuOri, c._EmialUsuDes, c._RecetaId, c._Cumplido });
+                .HasKey(c => c._IdReto);
+            modelBuilder.Entity<Reto>()
+                .Property(f => f._IdReto)
+                .UseSqlServerIdentityColumn();
             modelBuilder.Entity<Reto>()
                 .HasOne(c => c._PerfilUsuOri)
                 .WithMany(c => c._ListaRetos)
@@ -230,7 +234,7 @@ namespace CookItWebApi.Models
             modelBuilder.Entity<Reto>()
                 .HasOne(c => c._PerfilUsuDes)
                 .WithMany()
-                .HasForeignKey(c => c._EmialUsuDes)
+                .HasForeignKey(c => c._EmailUsuDes)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Reto>()
                 .HasOne(a => a._EstadoReto)
@@ -251,6 +255,22 @@ namespace CookItWebApi.Models
                 .HasForeignKey(c => c._Email)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
+            modelBuilder.Entity<Supermercado>()
+                .HasKey(n => n._IdSupermercado);
+            modelBuilder.Entity<Supermercado>()
+                .Property(f => f._IdSupermercado)
+                .UseSqlServerIdentityColumn();
+            modelBuilder.Entity<Supermercado>()
+                .HasIndex(u => u._Nombre).IsUnique();
+            modelBuilder.Entity<Supermercado>()
+                .HasIndex(u => new { u._Latitud, u._Longitud }).IsUnique();
+            modelBuilder.Entity<Supermercado>()
+                .Property(p => p._Latitud)
+                .HasColumnType("decimal(18,3)");
+            modelBuilder.Entity<Supermercado>()
+                .Property(p => p._Longitud)
+                .HasColumnType("decimal(18,3)");
 
             base.OnModelCreating(modelBuilder);
 

@@ -40,7 +40,7 @@ namespace CookItWebApi.Controllers
             Perfil _Perfil = _Context.Perfiles.FirstOrDefault(x => x._Email == email);
 
             List<IngredienteUsuario> ingredientesUsuario = _Context.IngredienteUsuarios.Where(x => x._Email == email).ToList();
-            List<Reto> retos = _Context.Retos.Where(r => r._EmailUsuOri == email || r._EmialUsuDes == email).ToList();
+            List<Reto> retos = _Context.Retos.Where(r => r._EmailUsuOri == email || r._EmailUsuDes == email).ToList();
             List<Notificacion> notificaciones = _Context.Notificaciones.Where(n => n._Email == email).ToList();
             List<RecetaFavorita> recetaFavoritas = _Context.RecetasFavoritas.Where(rf => rf._Email == email).ToList();
 

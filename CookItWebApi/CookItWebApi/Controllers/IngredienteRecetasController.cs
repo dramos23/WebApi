@@ -66,6 +66,24 @@ namespace CookItWebApi.Controllers
             return new CreatedAtRouteResult("IngredienteRecetaCreado", new { id = _IngredienteReceta._IdIngrediente }, _IngredienteReceta);
         }
 
+        [HttpPost]
+        [Route("AltaListaIngRec")]
+        public IActionResult AltaListaIngRec([FromBody] List<IngredienteReceta> _IngredientesReceta, int RecetaId)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            foreach (IngredienteReceta ir in _IngredientesReceta) {
+                _Context.IngredienteRecetas.Add(ir);                
+            }
+            _Context.SaveChanges();
+
+            return Ok();
+        }
+
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] IngredienteReceta _IngredienteReceta, int id)
         {
