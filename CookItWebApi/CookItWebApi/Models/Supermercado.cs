@@ -13,6 +13,8 @@ namespace CookItWebApi.Models
 
         public string _Empresa { get; set; }
 
+        public byte[] _Foto { get; set; }
+
         public string _Dirección { get; set; }
 
         public string _Telefono { get; set; }

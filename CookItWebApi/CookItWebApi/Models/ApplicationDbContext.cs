@@ -197,7 +197,9 @@ namespace CookItWebApi.Models
 
 
             modelBuilder.Entity<Perfil>()
-                .HasKey(c => c._Email);            
+                .HasKey(c => c._Email);
+            modelBuilder.Entity<Perfil>()
+                .HasIndex(u => u._NombreUsuario).IsUnique();
             modelBuilder.Entity<Perfil>()
                 .HasOne(c => c._Usuario) 
                 .WithMany()
@@ -250,6 +252,9 @@ namespace CookItWebApi.Models
             modelBuilder.Entity<Notificacion>()
                 .HasKey(n => n._NotificacionId);
             modelBuilder.Entity<Notificacion>()
+                .Property(f => f._NotificacionId)
+                .UseSqlServerIdentityColumn();
+            modelBuilder.Entity<Notificacion>()
                 .HasOne(a => a._Perfil)
                 .WithMany(a => a._ListaNotificaciones)
                 .HasForeignKey(c => c._Email)
@@ -267,10 +272,10 @@ namespace CookItWebApi.Models
                 .HasIndex(u => new { u._Latitud, u._Longitud }).IsUnique();
             modelBuilder.Entity<Supermercado>()
                 .Property(p => p._Latitud)
-                .HasColumnType("decimal(18,3)");
+                .HasColumnType("decimal(18,6)");
             modelBuilder.Entity<Supermercado>()
                 .Property(p => p._Longitud)
-                .HasColumnType("decimal(18,3)");
+                .HasColumnType("decimal(18,6)");
 
             base.OnModelCreating(modelBuilder);
 

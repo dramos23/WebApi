@@ -15,7 +15,7 @@ namespace CookItWebApi.Models
             Leido = 1,
         }
 
-        public string _NotificacionId { get; set; }
+        public int _NotificacionId { get; set; }
 
         public string _Email { get; set; }
         [JsonIgnore]

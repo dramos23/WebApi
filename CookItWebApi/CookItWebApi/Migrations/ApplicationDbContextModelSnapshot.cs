@@ -241,8 +241,9 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.Notificacion", b =>
                 {
-                    b.Property<string>("_NotificacionId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("_NotificacionId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("_Descripcion");
 
@@ -297,6 +298,8 @@ namespace CookItWebApi.Migrations
 
                     b.Property<string>("_Apellido")
                         .IsRequired();
+
+                    b.Property<int>("_Categoria");
 
                     b.Property<bool>("_FiltroAutomatico");
 
@@ -362,7 +365,12 @@ namespace CookItWebApi.Migrations
                     b.Property<string>("_NombreUsuario")
                         .IsRequired();
 
+                    b.Property<int>("_Puntuacion");
+
                     b.HasKey("_Email");
+
+                    b.HasIndex("_NombreUsuario")
+                        .IsUnique();
 
                     b.ToTable("Perfiles");
                 });
@@ -493,11 +501,13 @@ namespace CookItWebApi.Migrations
 
                     b.Property<string>("_Empresa");
 
+                    b.Property<byte[]>("_Foto");
+
                     b.Property<decimal>("_Latitud")
-                        .HasColumnType("decimal(18,3)");
+                        .HasColumnType("decimal(18,6)");
 
                     b.Property<decimal>("_Longitud")
-                        .HasColumnType("decimal(18,3)");
+                        .HasColumnType("decimal(18,6)");
 
                     b.Property<string>("_Nombre");
 

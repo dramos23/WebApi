@@ -56,7 +56,7 @@ namespace CookItWebApi.Models
                     notificacion.Notificacion_content.Title = "CookIt!: " + _PerfilUsuOri._NombreUsuario + " te ha desafiado!!!";
                     notificacion.Notificacion_content.Body = "Hola " + _PerfilUsuDes._NombreUsuario + ".\\n" + _PerfilUsuOri._NombreUsuario
                         + " te ha retado a preparar está exquicita receta: '" + _Receta._Titulo
-                        + "'.\\nAprenda hacerla y acumulas " + _Puntaje + " puntos para subir de nivel.";
+                        + "'.\\nAprenda hacerla y acumulá " + _Puntaje + " puntos para subir de nivel.";
                     notificacion.Notification_target.Devices.Add(DeviceIdDes);
                     notificacion.Notificacion_content.Custom_Data.Add("Reto", "Reto");
                     break;

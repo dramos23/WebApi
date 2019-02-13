@@ -11,7 +11,15 @@ namespace CookItWebApi.Models
     //[Table("Perfiles")]
     public class Perfil
     {
-        
+        public enum Categoria
+        {
+            Amatér = 1,
+            Cocinero = 2,
+            SubChef = 3,
+            Chef = 4,
+            Master = 5
+        }
+
         public string _Email { get; set; }        
         [JsonIgnore]
         public virtual Usuario _Usuario { get; set; }        
@@ -22,6 +30,10 @@ namespace CookItWebApi.Models
         public string _Nombre { set; get; }
         [Required]
         public string _Apellido { set; get; }
+        [Required]
+        public int _Puntuacion { get; set; }
+        [Required]
+        public Categoria _Categoria { get; set; }
 
         [Required]
         public bool _FiltroAutomatico { set; get; }
@@ -100,6 +112,34 @@ namespace CookItWebApi.Models
             //_ListaRetos = new List<Reto>();
             //_ListaNotificaciones = new List<Notificacion>();
             //_ListaRecetasFavoritas = new List<RecetaFavorita>();
+        }
+
+        internal void VerificarCategoria()
+        {
+            int puntaje = _Puntuacion;
+            
+
+            if (puntaje > 250 && puntaje <= 500) //proximo nivel cociero
+            {
+                _Categoria = Categoria.Cocinero;
+            }
+            if (puntaje > 500 && puntaje <= 750) // subchef
+            {
+                _Categoria = Categoria.SubChef;
+            }
+            if (puntaje > 750 && puntaje <= 1000) //chef
+            {
+                _Categoria = Categoria.Chef;
+            }
+            if (puntaje > 1000 && puntaje <= 1250) //master
+            {
+                _Categoria = Categoria.Master;
+            }
+        }
+
+        internal void SumarPuntaje(int puntaje)
+        {
+            _Puntuacion += puntaje;
         }
     }
 

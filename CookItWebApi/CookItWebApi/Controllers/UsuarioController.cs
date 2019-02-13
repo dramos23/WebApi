@@ -81,7 +81,7 @@ namespace CookItWebApi.Controllers
                 if (result.Succeeded)
                 {
 
-                    _Context.Entry(Usuario).Property("_DeviceId").IsModified = true;
+                    //_Context.Entry(Usuario).Property("_DeviceId").IsModified = true;
                     _Context.Entry(Usuario).Property("_UltimoIngreso").IsModified = true;
                     _Context.SaveChanges();                   
                     
@@ -143,6 +143,26 @@ namespace CookItWebApi.Controllers
                 {
                     return NotFound(resultado);
                 }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateUUID")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult UpdateUUID([FromBody] Usuario Usuario)
+        {
+            if (ModelState.IsValid)
+            {
+
+                _Context.Entry(Usuario).Property("_DeviceId").IsModified = true;
+                _Context.SaveChanges();
+
+                return Ok();                    
+                
             }
             else
             {

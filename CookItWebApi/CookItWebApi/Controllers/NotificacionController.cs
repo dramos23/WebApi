@@ -25,25 +25,25 @@ namespace CookItWebApi.Controllers
 
         }
 
+        //[HttpGet]
+        //[Route("ObtenerNotificacion/{email}")]
+        //public IActionResult GetActionResult(string email)
+        //{
+        //    var noti = _Context.Notificaciones.FirstOrDefault(n => n._Email == email && n._FechaHora == (_Context.Notificaciones.Where(m => m._Email == email).Max(m => m._FechaHora)));
+
+        //    if (noti != null)
+        //    {
+        //        return Ok(noti);
+        //    }
+
+        //    return NotFound(); ;
+        //}
+
         [HttpGet]
-        [Route("ObtenerNotificacion/{email}")]
-        public IActionResult GetActionResult(string email)
+        [Route("ObtenerNotificacion/{id}")]
+        public Notificacion GetbyId(int id)
         {
-            var noti = _Context.Notificaciones.FirstOrDefault(n => n._Email == email && n._FechaHora == (_Context.Notificaciones.Where(m => m._Email == email).Max(m => m._FechaHora)));
-
-            if (noti != null)
-            {
-                return Ok(noti);
-            }
-
-            return NotFound(); ;
-        }
-
-        [HttpGet]
-        [Route("ObtenerNotificaciones/{email}")]
-        public IEnumerable<Notificacion> GetbyEmail(string email)
-        {
-            return _Context.Notificaciones.Where(n => n._Email == email).ToList();            
+            return _Context.Notificaciones.FirstOrDefault(n => n._NotificacionId == id);            
 
         }
 

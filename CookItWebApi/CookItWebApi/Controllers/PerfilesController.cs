@@ -39,7 +39,7 @@ namespace CookItWebApi.Controllers
 
             Perfil _Perfil = _Context.Perfiles.FirstOrDefault(x => x._Email == email);
 
-            List<IngredienteUsuario> ingredientesUsuario = _Context.IngredienteUsuarios.Where(x => x._Email == email).ToList();
+            List<IngredienteUsuario> ingredientesUsuario = _Context.IngredienteUsuarios.Where(iu => iu._Email == email).Include(i => i._Ingrediente) .ToList();
             List<Reto> retos = _Context.Retos.Where(r => r._EmailUsuOri == email || r._EmailUsuDes == email).ToList();
             List<Notificacion> notificaciones = _Context.Notificaciones.Where(n => n._Email == email).ToList();
             List<RecetaFavorita> recetaFavoritas = _Context.RecetasFavoritas.Where(rf => rf._Email == email).ToList();
@@ -90,6 +90,24 @@ namespace CookItWebApi.Controllers
             _Context.SaveChanges();
             return Ok(_Perfil);
 
+        }
+
+        [HttpGet]
+        [Route("Gamificacion/{email}")]
+        public IActionResult GetGamificacion([FromRoute] string email)
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+
+            Perfil perfil = _Context.Perfiles.Where(p => p._Email == email).Select(p => new Perfil { _Email = p._Email, _Categoria = p._Categoria, _Puntuacion = p._Puntuacion }).Single();
+
+            int cat = Convert.ToInt32(perfil._Categoria);
+
+            dic.Add("Email", perfil._Email);
+            dic.Add("Categoria", Convert.ToString(cat));
+            dic.Add("Puntuacion", perfil._Puntuacion.ToString());
+
+            return Ok(dic);
+            
         }
 
     }

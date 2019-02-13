@@ -70,12 +70,12 @@ namespace CookItWebApi.Controllers
                     _Context.Retos.Add(reto);
                     _Context.SaveChanges();
 
-                    var ret = await GenerarNotificacion(reto);
+                    await GenerarNotificacion(reto);
                     
-
-                    return Ok(reto);
+                    return Ok(reto._IdReto);
                 }
-                else {
+                else
+                {
                     return Conflict();
                 }
 
@@ -96,31 +96,28 @@ namespace CookItWebApi.Controllers
 
             NotificacionAppCenter notificacionAppCenter = reto.NotificarReto(DeviceIdOri, DeviceIdDes);
             NotificacionService notificacionService = new NotificacionService();
-            NotificacionAppCenter appCenter = await notificacionService.Alta(notificacionAppCenter);
-            if (appCenter != null)
-            {
+            
+            Notificacion notificacion = new Notificacion()
+            {                   
+                _Email = (reto._IdEstadoReto >= 2 && reto._IdEstadoReto <= 4) ? reto._PerfilUsuOri._Email : reto._PerfilUsuDes._Email,
+                _Estado = Notificacion.Estado.SinLeer,
+                _FechaHora = DateTime.Now,
+                _Titulo = notificacionAppCenter.Notificacion_content.Title,
+                _Descripcion = notificacionAppCenter.Notificacion_content.Body,
+                _Tabla = "Reto",
+                _Pk1 = reto._IdReto.ToString()
+            };
 
-                Notificacion notificacion = new Notificacion()
-                {
-                    _NotificacionId = appCenter.Notification_id,
-                    _Email = (reto._IdEstadoReto >= 2 && reto._IdEstadoReto <= 4) ? reto._PerfilUsuOri._Email : reto._PerfilUsuDes._Email,
-                    _Estado = Notificacion.Estado.SinLeer,
-                    _FechaHora = DateTime.Now,
-                    _Titulo = notificacionAppCenter.Notificacion_content.Title,
-                    _Descripcion = notificacionAppCenter.Notificacion_content.Body,
-                    _Tabla = "Reto",
-                    _Pk1 = reto._IdReto.ToString()
-                    
-                };
+            _Context.Notificaciones.Add(notificacion);
+            _Context.SaveChanges();
 
-                _Context.Notificaciones.Add(notificacion);
-                _Context.SaveChanges();
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
+            notificacionAppCenter.Notificacion_content.Custom_Data.Add("NotificacionID", notificacion._NotificacionId.ToString());
+            notificacionAppCenter.Notificacion_content.Custom_Data.Add("RetoID", reto._IdReto.ToString());
+
+            await notificacionService.Enviar(notificacionAppCenter);
+
+            return Ok();
+            
         }
 
 
@@ -141,9 +138,20 @@ namespace CookItWebApi.Controllers
                         r._ComentarioDestino = reto._ComentarioDestino;
 
                         _Context.Entry(r).State = EntityState.Modified;
-                        _Context.SaveChanges();
+                        int save =  _Context.SaveChanges();
 
-                        var ret = await GenerarNotificacion(r);
+                        if (save == 1 && reto._IdEstadoReto == 5) {
+
+                            Perfil perfil = _Context.Perfiles.FirstOrDefault(p => p._Email == r._EmailUsuDes);
+                            perfil.SumarPuntaje(r._Puntaje);
+                            perfil.VerificarCategoria();
+
+                            _Context.Entry(perfil).State = EntityState.Modified;
+                            _Context.SaveChanges();
+
+                        }
+
+                        await GenerarNotificacion(r);
 
 
                         return Ok();

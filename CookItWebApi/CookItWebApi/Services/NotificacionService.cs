@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -23,7 +24,7 @@ namespace CookItWebApi.Services
         }
 
 
-        public async Task<NotificacionAppCenter> Alta(NotificacionAppCenter obj)
+        public async Task<bool> Enviar(NotificacionAppCenter obj)
         {
             
             string Url = Web;
@@ -41,28 +42,13 @@ namespace CookItWebApi.Services
                         .SendAsync(request, HttpCompletionOption.ResponseHeadersRead)
                         .ConfigureAwait(false))
                     {
-                        string JsonResult = response.Content.ReadAsStringAsync().Result;
-                        try
-                        {
-                            NotificacionAppCenter ContentResp = Deseralizar(JsonResult);
-                            return ContentResp;
-                        }
-                        catch (Exception)
-                        {
-                            return null;
-                        }
+                        return response.IsSuccessStatusCode;
+                        
                     }
                 }
             }
 
         }
 
-        private NotificacionAppCenter Deseralizar(string jsonResult)
-        {
-
-            NotificacionAppCenter p = JsonConvert.DeserializeObject<NotificacionAppCenter>(jsonResult);
-            return p;
-
-        }
     }
 }
