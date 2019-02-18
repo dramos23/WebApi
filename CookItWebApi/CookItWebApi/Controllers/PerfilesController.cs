@@ -68,7 +68,7 @@ namespace CookItWebApi.Controllers
 
                 _Context.Perfiles.Add(_Perfil);
                 _Context.SaveChanges();
-                return new CreatedAtRouteResult("PerfilCreado", new { email = _Perfil._Email }, _Perfil);
+                return Ok();
 
             }
 
@@ -88,8 +88,30 @@ namespace CookItWebApi.Controllers
 
             _Context.Entry(_Perfil).State = EntityState.Modified;
             _Context.SaveChanges();
-            return Ok(_Perfil);
+            return Ok();
 
+        }
+
+        [HttpPost]
+        [Route("PerfilFB")]
+        public IActionResult PostFB([FromBody] Perfil per)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                Perfil perfil = _Context.Perfiles.FirstOrDefault(p => p._Email == per._Email);
+
+                if (perfil != null)
+                {
+                    return Put(per);
+                }
+                else {
+                    return Post(per);
+                }                
+
+            }
+
+            return BadRequest(ModelState);
         }
 
         [HttpGet]
@@ -98,10 +120,11 @@ namespace CookItWebApi.Controllers
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
 
-            Perfil perfil = _Context.Perfiles.Where(p => p._Email == email).Select(p => new Perfil { _Email = p._Email, _Categoria = p._Categoria, _Puntuacion = p._Puntuacion }).Single();
+            Perfil perfil = _Context.Perfiles.Where(p => p._Email == email).Select(p => new Perfil {_Email = p._Email, _Categoria = p._Categoria, _Puntuacion = p._Puntuacion }).Single();
 
             int cat = Convert.ToInt32(perfil._Categoria);
 
+            dic.Add("Id", perfil._Email);
             dic.Add("Email", perfil._Email);
             dic.Add("Categoria", Convert.ToString(cat));
             dic.Add("Puntuacion", perfil._Puntuacion.ToString());

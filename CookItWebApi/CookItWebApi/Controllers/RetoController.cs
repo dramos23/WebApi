@@ -54,7 +54,7 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Reto reto)
+        public IActionResult Post([FromBody] Reto reto)
         {
 
             if (ModelState.IsValid)
@@ -70,13 +70,13 @@ namespace CookItWebApi.Controllers
                     _Context.Retos.Add(reto);
                     _Context.SaveChanges();
 
-                    await GenerarNotificacion(reto);
+                    //await GenerarNotificacion(reto);
                     
                     return Ok(reto._IdReto);
                 }
                 else
                 {
-                    return Conflict();
+                    return Conflict(-1);
                 }
 
             }
@@ -123,7 +123,7 @@ namespace CookItWebApi.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Reto reto)
+        public IActionResult Put([FromBody] Reto reto)
         {
             if (ModelState.IsValid)
             {
@@ -151,7 +151,7 @@ namespace CookItWebApi.Controllers
 
                         }
 
-                        await GenerarNotificacion(r);
+                        //await GenerarNotificacion(r);
 
 
                         return Ok();

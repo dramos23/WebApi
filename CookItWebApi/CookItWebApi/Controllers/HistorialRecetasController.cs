@@ -20,11 +20,11 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet("{Email}")]
-        public IEnumerable<HistorialReceta> GetAll(string Email)
+        [HttpGet("{idPerfil}")]
+        public IEnumerable<HistorialReceta> GetAll(string idPerfil)
         {
 
-            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._Email == Email).ToList();
+            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._IdPerfil == idPerfil).ToList();
             return _HistorialReceta;
 
         }

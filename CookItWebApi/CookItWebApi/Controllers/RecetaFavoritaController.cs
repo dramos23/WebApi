@@ -22,11 +22,11 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet("{EmailUsu}")]
-        public IEnumerable<RecetaFavorita> GetAll(string EmailUsu)
+        [HttpGet("{idPerfil}")]
+        public IEnumerable<RecetaFavorita> GetAll(string idPerfil)
         {
 
-            var _RecetasFavoritas = _Context.RecetasFavoritas.Where(x => x._Email == EmailUsu).ToList();
+            var _RecetasFavoritas = _Context.RecetasFavoritas.Where(x => x._Email == idPerfil).ToList();
 
             foreach (RecetaFavorita x in _RecetasFavoritas)
             {
@@ -65,11 +65,11 @@ namespace CookItWebApi.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpDelete("{EmailUsu},{RecetaId}")]
-        public IActionResult Delete(string EmailUsu, int RecetaId)
+        [HttpDelete("{idPerfil},{RecetaId}")]
+        public IActionResult Delete(string idPerfil, int RecetaId)
         {
 
-            var _RecetaFavorita = _Context.RecetasFavoritas.FirstOrDefault(x => x._Email == EmailUsu && x._IdReceta == RecetaId);
+            var _RecetaFavorita = _Context.RecetasFavoritas.FirstOrDefault(x => x._Email == idPerfil && x._IdReceta == RecetaId);
 
             if (_RecetaFavorita == null)
             {

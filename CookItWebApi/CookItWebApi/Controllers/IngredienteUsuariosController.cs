@@ -33,11 +33,11 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet("{email},{id}", Name = "IngredienteUsuarioCreado")]
-        public IActionResult GetbyId(string _Email, int _IdIngrediente)
+        [HttpGet("{email},{idIngrediente}", Name = "IngredienteUsuarioCreado")]
+        public IActionResult GetbyId(string email, int idIngrediente)
         {
 
-            IngredienteUsuario ingredienteUsuario = _Context.IngredienteUsuarios.FirstOrDefault(iu => iu._Email == _Email && iu._IdIngrediente == _IdIngrediente);
+            IngredienteUsuario ingredienteUsuario = _Context.IngredienteUsuarios.FirstOrDefault(iu => iu._Email == email && iu._IdIngrediente == idIngrediente);
 
             if (ingredienteUsuario == null)
             {
@@ -62,25 +62,43 @@ namespace CookItWebApi.Controllers
                     ingredienteUsuario._Cantidad += IngredienteUsuario._Cantidad;
                     _Context.Entry(ingredienteUsuario).State = EntityState.Modified;
                     _Context.SaveChanges();
-                    return new CreatedAtRouteResult("IngredienteUsuarioCreado", new { email = ingredienteUsuario._Email, id = ingredienteUsuario._IdIngrediente }, ingredienteUsuario);
+                    return Ok();
                 }
                 else { 
 
                     _Context.IngredienteUsuarios.Add(IngredienteUsuario);
                     _Context.SaveChanges();
-                    return new CreatedAtRouteResult("IngredienteUsuarioCreado", new {email = IngredienteUsuario._Email, id = IngredienteUsuario._IdIngrediente}, IngredienteUsuario);
+                    return Ok();
                 }
 
             }
 
-            return BadRequest(ModelState);
+            return BadRequest();
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] IngredienteUsuario IngredienteUsuario)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                
+                _Context.Entry(IngredienteUsuario).State = EntityState.Modified;
+                _Context.SaveChanges();
+                return Ok();
+                
+
+            }
+
+            return BadRequest();
         }
 
         [HttpDelete("{email},{id}")]
-        public IActionResult Delete(string Email, int Id)
+        public IActionResult Delete(string email, int Id)
         {
 
-            IngredienteUsuario ingredienteUsuario = _Context.IngredienteUsuarios.FirstOrDefault(iu => iu._Email == Email && iu._IdIngrediente == Id);
+            IngredienteUsuario ingredienteUsuario = _Context.IngredienteUsuarios.FirstOrDefault(iu => iu._Email == email && iu._IdIngrediente == Id);
 
             if (ingredienteUsuario == null)
             {

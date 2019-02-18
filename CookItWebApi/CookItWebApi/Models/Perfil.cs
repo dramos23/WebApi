@@ -20,7 +20,7 @@ namespace CookItWebApi.Models
             Master = 5
         }
 
-        public string _Email { get; set; }        
+        public string _Email { get; set; }              
         [JsonIgnore]
         public virtual Usuario _Usuario { get; set; }        
         public byte[] _Foto { set; get; }

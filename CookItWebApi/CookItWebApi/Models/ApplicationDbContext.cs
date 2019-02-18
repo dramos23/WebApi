@@ -113,9 +113,6 @@ namespace CookItWebApi.Models
 
             modelBuilder.Entity<PasoReceta>()
                 .HasKey(c => new { c._IdReceta, c._IdPasoReceta});
-            //modelBuilder.Entity<PasoReceta>()
-            //    .Property(r => r._IdPasoReceta)
-            //    .ValueGeneratedOnAdd();
             modelBuilder.Entity<PasoReceta>()
                 .HasOne(c => c._Receta)
                 .WithMany(c => c._ListaPasosReceta)
@@ -140,7 +137,7 @@ namespace CookItWebApi.Models
 
 
             modelBuilder.Entity<HistorialReceta>()
-                .HasKey(c => new { c._Email, c._IdReceta, c._FechaHora });
+                .HasKey(c => new { c._IdPerfil, c._IdReceta, c._FechaHora });
             modelBuilder.Entity<HistorialReceta>()
                 .HasOne(c => c._Receta)
                 .WithMany()
@@ -149,7 +146,7 @@ namespace CookItWebApi.Models
             modelBuilder.Entity<HistorialReceta>()
                 .HasOne(c => c._Usuario)
                 .WithMany(c => c._ListaHistorialRecetas)
-                .HasForeignKey(a => a._Email)
+                .HasForeignKey(a => a._IdPerfil)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<RecetaFavorita>()
@@ -195,9 +192,8 @@ namespace CookItWebApi.Models
             modelBuilder.Entity<Usuario>()
                 .Ignore(p => p._ListaHistorialRecetas);
 
-
             modelBuilder.Entity<Perfil>()
-                .HasKey(c => c._Email);
+                .HasKey(u => u._Email);
             modelBuilder.Entity<Perfil>()
                 .HasIndex(u => u._NombreUsuario).IsUnique();
             modelBuilder.Entity<Perfil>()

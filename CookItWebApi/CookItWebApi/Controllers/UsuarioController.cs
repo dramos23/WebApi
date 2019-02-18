@@ -43,7 +43,7 @@ namespace CookItWebApi.Controllers
         }
 
         
-        [HttpPost]
+        [HttpPost()]
         [Route("Registrar")]
         public async Task<IActionResult> CrearUsuario([FromBody] Usuario Usuario)
         {
@@ -68,6 +68,78 @@ namespace CookItWebApi.Controllers
                 return BadRequest(ModelState);        
             }
 
+        }
+
+        [HttpPost]
+        [Route("RegistrarFB")]
+        public async Task<IActionResult> CrearUsuarioFB([FromBody] Usuario Usuario)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                var usuario = _Context.Usuarios.FirstOrDefault(u => u._Email == Usuario._Email);
+
+                if (usuario == null)
+                {
+
+                    Usuario._Password = CrearPassword();
+
+                    return await CrearUsuario(Usuario);
+                }
+                else
+                {
+                    bool actualizo = ActualizoEmail(Usuario, usuario);
+
+                    if (actualizo)
+                    {
+
+                        _Context.Entry(Usuario).Property("_Email").IsModified = true;
+                        _Context.SaveChanges();
+
+                    }
+
+                    return BuildToken(Usuario);
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
+        }
+
+        private bool ActualizoEmail(Usuario usuario1, Usuario usuario2)
+        {
+            bool actualizo = false;
+
+            if (!usuario2.ValidarEmail())
+            {
+
+                if (usuario1.ValidarEmail())
+                {
+
+                    actualizo = true;
+
+                }
+
+            }
+            else
+            {
+
+                if (usuario1.ValidarEmail())
+                {
+                    if (usuario2._Email != usuario1._Email)
+                    {
+                        if (!usuario1._Email.Contains(usuario1._Email))
+                        {
+                            actualizo = true;
+                        }
+                    }
+                }
+            }
+
+            return actualizo;
         }
 
         [HttpPost]
@@ -163,6 +235,25 @@ namespace CookItWebApi.Controllers
 
                 return Ok();                    
                 
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        [Route("ObtenerUUID/{email}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult ObtenerUUID(string email)
+        {
+            if (ModelState.IsValid)
+            {
+
+                Guid? uuid = _Context.Usuarios.FirstOrDefault(u => u._Email == email)._DeviceId;                
+
+                return Ok(uuid);
+
             }
             else
             {

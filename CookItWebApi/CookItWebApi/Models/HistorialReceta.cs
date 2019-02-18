@@ -12,7 +12,7 @@ namespace CookItWebApi.Models
     public class HistorialReceta
     {
                        
-        public string _Email { get; set; }
+        public string _IdPerfil { get; set; }
         [JsonIgnore]
         public Usuario _Usuario { get; set; }
 

@@ -48,21 +48,38 @@ namespace CookItWebApi.Controllers
         }
 
         [HttpPut]
-        [Route("CambioEstado")]
-        public IActionResult Put([FromBody] Notificacion notificacion)
+        [Route("CambioEstado/{id}")]
+        public IActionResult Put(int id)
         {
-            var noti = _Context.Notificaciones.FirstOrDefault(n => n._NotificacionId == notificacion._NotificacionId);
+            var noti = _Context.Notificaciones.FirstOrDefault(n => n._NotificacionId == id);
 
             if (noti != null)
             {
-                noti._Estado = notificacion._Estado;
+                noti._Estado = Notificacion.Estado.Leido;
                 _Context.Entry(noti).State = EntityState.Modified;
                 _Context.SaveChanges();
                 return Ok();
             }
 
-            return BadRequest(ModelState);
+            return NotFound();
 
+
+
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Notificacion notificacion) {
+
+            if (ModelState.IsValid)
+            {
+                _Context.Notificaciones.Add(notificacion);
+                _Context.SaveChanges();
+
+                return Ok(notificacion._NotificacionId);                
+
+            }
+
+            return NotFound();
 
 
         }

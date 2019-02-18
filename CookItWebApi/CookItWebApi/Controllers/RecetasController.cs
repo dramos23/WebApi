@@ -29,7 +29,20 @@ namespace CookItWebApi.Controllers
         public IEnumerable<Receta> Get()
         {
 
-            return _Context.Recetas.ToList();
+            IEnumerable<Receta> recetas = _Context.Recetas.ToList();
+            foreach (Receta receta in recetas) {
+
+                List<IngredienteReceta> ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == receta._IdReceta).Include(x => x._Ingrediente).ToList();
+                List<PasoReceta> pasoRecetas = _Context.PasoRecetas.Where(x => x._IdReceta == receta._IdReceta).ToList();
+                List<ComentarioReceta> comentarioRecetas = _Context.ComentarioRecetas.Where(x => x._IdReceta == receta._IdReceta).ToList();
+
+                receta._ListaIngredientesReceta = ingredientesReceta;
+                receta._ListaPasosReceta = pasoRecetas;
+                receta._ListaComentariosReceta = comentarioRecetas;
+
+            }
+
+            return recetas;
 
         }
 
@@ -56,42 +69,6 @@ namespace CookItWebApi.Controllers
             }
 
             return Ok(receta);
-
-        }
-
-        [HttpPost]
-        [Route("RecetasFiltro")]
-        public IActionResult ObtenerRecetasFiltro([FromBody] Dictionary<string, string> obj)
-        {
-
-            List<Receta> _Recetas = _Context.Recetas.ToList();
-            _Recetas = (obj.ContainsKey("AptoCeliaco")) ? _Recetas.FindAll(x => x._AptoCeliacos == Boolean.Parse(obj["AptoCeliaco"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("AptoDiabetico")) ? _Recetas.FindAll(x => x._AptoDiabeticos == Boolean.Parse(obj["AptoDiabetico"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("AptoVegano")) ? _Recetas.FindAll(x => x._AptoVeganos == Boolean.Parse(obj["AptoVegano"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("AptoVegetariano")) ? _Recetas.FindAll(x => x._AptoVegetarianos == Boolean.Parse(obj["AptoVegetariano"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("MomentoDia")) ? _Recetas.FindAll(x => x._MomentoDia._IdMomentoDia == Convert.ToInt64(obj["MomentoDia"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("PuntajeTotal")) ? _Recetas.FindAll(x => x._PuntajeTotal == Convert.ToDouble(obj["PuntajeTotal"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("Estacion")) ? _Recetas.FindAll(x => x._Estacion._IdEstacion == Convert.ToInt64(obj["Estacion"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("Dificultad")) ? _Recetas.FindAll(x => x._Dificultad == Convert.ToInt64(obj["Dificultad"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("CostoMayorIgual")) ? _Recetas.FindAll(x => x._Costo >= Convert.ToInt64(obj["CostoMayorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("CostoMenorIgual")) ? _Recetas.FindAll(x => x._Costo <= Convert.ToInt64(obj["CostoMenorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("PuntajeMayorIgual")) ? _Recetas.FindAll(x => x._Costo >= Convert.ToInt64(obj["PuntajeMayorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("PuntajeMenorIgual")) ? _Recetas.FindAll(x => x._Costo <= Convert.ToInt64(obj["PuntajeMenorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("CaloriasMayorIgual")) ? _Recetas.FindAll(x => x._CantCalorias >= Convert.ToInt64(obj["CaloriasMayorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("CaloriasMenorIgual")) ? _Recetas.FindAll(x => x._CantCalorias <= Convert.ToInt64(obj["CaloriasMenorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("CantPlatosMayorIgual")) ? _Recetas.FindAll(x => x._CantPlatos >= Convert.ToInt64(obj["CantPlatosMayorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("CantPlatosMenorIgual")) ? _Recetas.FindAll(x => x._CantPlatos <= Convert.ToInt64(obj["CantPlatosMenorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("TiempoPreparacionMayorIgual")) ? _Recetas.FindAll(x => x._TiempoPreparacion >= Convert.ToInt64(obj["TiempoPreparacionMayorIgual"])) : _Recetas;
-            _Recetas = (obj.ContainsKey("TiempoPreparacionMenorIgual")) ? _Recetas.FindAll(x => x._TiempoPreparacion <= Convert.ToInt64(obj["TiempoPreparacionMenorIgual"])) : _Recetas;
-
-
-            if (_Recetas == null)
-            {
-
-                return NotFound();
-            }
-
-            return Ok(_Recetas);
 
         }
 
