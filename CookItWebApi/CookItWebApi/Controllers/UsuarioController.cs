@@ -43,7 +43,7 @@ namespace CookItWebApi.Controllers
         }
 
         
-        [HttpPost()]
+        [HttpPost]
         [Route("Registrar")]
         public async Task<IActionResult> CrearUsuario([FromBody] Usuario Usuario)
         {
@@ -89,16 +89,6 @@ namespace CookItWebApi.Controllers
                 }
                 else
                 {
-                    bool actualizo = ActualizoEmail(Usuario, usuario);
-
-                    if (actualizo)
-                    {
-
-                        _Context.Entry(Usuario).Property("_Email").IsModified = true;
-                        _Context.SaveChanges();
-
-                    }
-
                     return BuildToken(Usuario);
                 }
             }
@@ -314,9 +304,9 @@ namespace CookItWebApi.Controllers
 
         public string CrearPassword()
         {
-            int longitud = 10;
+            int longitud = 8;
             bool check = true;
-            string caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!*@#$%^&+=";
+            string caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!*@#$%^&+=.";
             StringBuilder res = new StringBuilder();
             Random rnd = new Random();
             while (check)
@@ -331,7 +321,7 @@ namespace CookItWebApi.Controllers
                 }
                 else
                 {
-                    longitud = 10;
+                    longitud = 8;
                     res.Clear();
                 }
             }
@@ -345,7 +335,7 @@ namespace CookItWebApi.Controllers
                 return false;
             }
             
-            Regex regex = new Regex(@"^.*(?=.{10,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!*@#$%^&+=]).*$");
+            Regex regex = new Regex(@"^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!*@#$%^&+=.]).*$");
             Match match = regex.Match(value);
 
             return match.Success;
