@@ -20,11 +20,11 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet("{idPerfil}")]
-        public IEnumerable<HistorialReceta> GetAll(string idPerfil)
+        [HttpGet("{email}")]
+        public IEnumerable<HistorialReceta> GetAll(string email)
         {
 
-            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._IdPerfil == idPerfil).ToList();
+            var _HistorialReceta = _Context.HistorialRecetas.Where(x => x._Email == email).ToList();
             return _HistorialReceta;
 
         }
@@ -37,11 +37,11 @@ namespace CookItWebApi.Controllers
             {                
                 _Context.HistorialRecetas.Add(_HistorialReceta);
                 _Context.SaveChanges();
-                return Ok(_HistorialReceta);
+                return Ok();
 
             }
 
-            return BadRequest(ModelState);
+            return BadRequest();
         }
 
     }

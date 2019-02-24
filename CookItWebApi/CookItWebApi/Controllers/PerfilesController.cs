@@ -102,8 +102,12 @@ namespace CookItWebApi.Controllers
                 Perfil perfil = _Context.Perfiles.FirstOrDefault(p => p._Email == per._Email);
 
                 if (perfil != null)
-                {
-                    return Put(per);
+                {                    
+
+                    _Context.Entry(per).Property("_Foto").IsModified = true;
+                    _Context.SaveChanges();
+
+                    return Ok();
                 }
                 else {
                     return Post(per);

@@ -25,11 +25,11 @@ namespace CookItWebApi.Controllers
 
         }
 
-        [HttpGet]
-        public IEnumerable<Receta> Get()
+        [HttpGet("{email}")]
+        public IEnumerable<Receta> Get(string email)
         {
 
-            IEnumerable<Receta> recetas = _Context.Recetas.ToList();
+            List<Receta> recetas = _Context.Recetas.Where(r => r._Habilitada == true || r._Email == email) .ToList();
             foreach (Receta receta in recetas) {
 
                 List<IngredienteReceta> ingredientesReceta = _Context.IngredienteRecetas.Where(x => x._IdReceta == receta._IdReceta).Include(x => x._Ingrediente).ToList();
@@ -75,29 +75,16 @@ namespace CookItWebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Receta Receta)
         {
-            if (Receta._ListaIngredientesReceta.Count > 0)
-            {
-
-                foreach (IngredienteReceta ingredienteReceta in Receta._ListaIngredientesReceta)
-                {
-
-                    Ingrediente ingrediente = _Context.Ingredientes.FirstOrDefault(i => i._IdIngrediente == ingredienteReceta._IdIngrediente);
-                    ingredienteReceta._Ingrediente = ingrediente;
-
-                }
-
-                Receta.CalcularAtributos();
-            }
 
             if (ModelState.IsValid)
             {
                 _Context.Recetas.Add(Receta);
                 _Context.SaveChanges();
-                return Ok(Receta);
+                return Ok(Receta._IdReceta);
                 
             }
             
-            return BadRequest(ModelState);
+            return BadRequest(-1);
 
         }
 

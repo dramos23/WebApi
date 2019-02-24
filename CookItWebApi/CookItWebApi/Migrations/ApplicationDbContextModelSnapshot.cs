@@ -132,19 +132,15 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.HistorialReceta", b =>
                 {
-                    b.Property<string>("_IdPerfil");
+                    b.Property<string>("_Email");
 
                     b.Property<int>("_IdReceta");
 
                     b.Property<DateTime>("_FechaHora");
 
-                    b.Property<string>("_Usuario_Email");
-
-                    b.HasKey("_IdPerfil", "_IdReceta", "_FechaHora");
+                    b.HasKey("_Email", "_IdReceta", "_FechaHora");
 
                     b.HasIndex("_IdReceta");
-
-                    b.HasIndex("_Usuario_Email");
 
                     b.ToTable("HistorialRecetas");
                 });
@@ -410,6 +406,8 @@ namespace CookItWebApi.Migrations
                     b.Property<DateTime>("_FechaCreacion");
 
                     b.Property<byte[]>("_Foto");
+
+                    b.Property<bool>("_Habilitada");
 
                     b.Property<int>("_IdEstacion");
 
@@ -689,14 +687,15 @@ namespace CookItWebApi.Migrations
 
             modelBuilder.Entity("CookItWebApi.Models.HistorialReceta", b =>
                 {
+                    b.HasOne("CookItWebApi.Models.Usuario", "_Usuario")
+                        .WithMany()
+                        .HasForeignKey("_Email")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("CookItWebApi.Models.Receta", "_Receta")
                         .WithMany()
                         .HasForeignKey("_IdReceta")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CookItWebApi.Models.Usuario", "_Usuario")
-                        .WithMany()
-                        .HasForeignKey("_Usuario_Email");
                 });
 
             modelBuilder.Entity("CookItWebApi.Models.Ingrediente", b =>

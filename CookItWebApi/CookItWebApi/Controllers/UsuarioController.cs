@@ -143,7 +143,7 @@ namespace CookItWebApi.Controllers
                 if (result.Succeeded)
                 {
 
-                    //_Context.Entry(Usuario).Property("_DeviceId").IsModified = true;
+                    _Context.Entry(Usuario).Property("_DeviceId").IsModified = true;
                     _Context.Entry(Usuario).Property("_UltimoIngreso").IsModified = true;
                     _Context.SaveChanges();                   
                     

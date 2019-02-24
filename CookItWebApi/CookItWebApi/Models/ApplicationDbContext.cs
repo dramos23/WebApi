@@ -137,7 +137,7 @@ namespace CookItWebApi.Models
 
 
             modelBuilder.Entity<HistorialReceta>()
-                .HasKey(c => new { c._IdPerfil, c._IdReceta, c._FechaHora });
+                .HasKey(c => new { c._Email, c._IdReceta, c._FechaHora });
             modelBuilder.Entity<HistorialReceta>()
                 .HasOne(c => c._Receta)
                 .WithMany()
@@ -146,7 +146,7 @@ namespace CookItWebApi.Models
             modelBuilder.Entity<HistorialReceta>()
                 .HasOne(c => c._Usuario)
                 .WithMany(c => c._ListaHistorialRecetas)
-                .HasForeignKey(a => a._IdPerfil)
+                .HasForeignKey(a => a._Email)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<RecetaFavorita>()

@@ -44,6 +44,7 @@ namespace CookItWebApi.Models
         public int _TiempoPreparacion { get; set; }
         //public Pais _PaisOrigen { get; set; }
         public byte[] _Foto { get; set; }
+        public bool _Habilitada { get; set; }
 
 
         
